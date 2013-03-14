@@ -33,28 +33,35 @@ public class MainActivity extends Activity {
     public void createEvent(View theView)
     {
     	Toast.makeText(this.getApplicationContext(), "Creating Competition...", Toast.LENGTH_SHORT).show();
-    	// buildTables();
-    	// Intent i = create something
-    	// startActivity(i);
+    	Intent intent;
+    	
+    	if(createDB()) // If all of the tables can be built, go to server activity
+		{
+			intent = new Intent(this, ServerSetupActivity.class);
+			startActivity(intent);
+		}
+    	else
+    		Toast.makeText(this.getApplicationContext(), "Cannot build competition.", Toast.LENGTH_SHORT).show();
     }
     
     public void joinEvent(View theView)
     {
     	Toast.makeText(this.getApplicationContext(), "Joining Competition...", Toast.LENGTH_SHORT).show();
-    	String competition = authenticateUser("userID");
-    	Intent intent;
-    	
-		if(true) // if a valid event is found, join it
-		{
-			Toast.makeText(this.getApplicationContext(), "Joined Competition ID-" + competition, Toast.LENGTH_SHORT).show();
-			intent = new Intent(this, ServerSetupActivity.class);
-			startActivity(intent);
-		}
+    	//String competition = authenticateUser("userID");
+    	//Intent intent;
     }
     
     // Dummy method: returns competition id
     private String authenticateUser(String userId)
     {
     	return "1234";
+    }
+    
+    // Sets up the tables to be used for the competition
+    private boolean createDB()
+    {
+    	// SQL STATEMENTS!!!!!
+    	// Don't forget to log what SQL statements are being used
+    	return true;
     }
 }
