@@ -1,9 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
+<!--
     <item
         android:id="@+id/menu_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/menu_settings"/>
+    <item android:id="@+id/judge_menu" android:title='@string/judges' android:showAsAction="always"></item>
+    <item android:id="@+id/team_menu" android:title="@string/teams" android:showAsAction="always"></item>
+    <item android:id="@+id/event_menu" android:title="@string/events"
+        android:showAsAction="always"></item> -->
 
 </menu>
