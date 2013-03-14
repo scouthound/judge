@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <application
@@ -23,8 +23,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.judgecompanion.ServerActivity"
+            android:name="com.example.judgecompanion.server.ServerSetupActivity"
             android:label="@string/title_activity_server" >
+        </activity>
+        <activity
+            android:name="com.example.judgecompanion.server.fragments.ServerSetupPageFragment"
+            android:label="@string/title_activity_server_page_fragment" >
         </activity>
     </application>
 

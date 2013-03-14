@@ -1,5 +1,7 @@
 package com.example.judgecompanion;
 
+import com.example.judgecompanion.server.ServerSetupActivity;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -45,7 +47,7 @@ public class MainActivity extends Activity {
 		if(true) // if a valid event is found, join it
 		{
 			Toast.makeText(this.getApplicationContext(), "Joined Competition ID-" + competition, Toast.LENGTH_SHORT).show();
-			intent = new Intent(this, ServerActivity.class);
+			intent = new Intent(this, ServerSetupActivity.class);
 			startActivity(intent);
 		}
     }

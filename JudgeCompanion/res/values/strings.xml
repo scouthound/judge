@@ -8,6 +8,8 @@
     <string name="create_button">Create New Competition</string>
     <string name="join_button">Join Existing Competition</string>
     <string name="created_by">Developed by SDDS Solutions</string>
-    
+    <string name="title_activity_server_page_fragment">ServerPageFragment</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
