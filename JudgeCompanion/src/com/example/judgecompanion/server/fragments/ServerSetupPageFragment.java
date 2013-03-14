@@ -45,6 +45,9 @@ public class ServerSetupPageFragment extends Fragment {
 			case 2:
 				rootView = (ViewGroup) inflater.inflate(R.layout.fragment_server_events, container, false);
 				break;
+			case 3:
+				rootView = (ViewGroup) inflater.inflate(R.layout.fragment_server_create, container, false);
+				break;
 			default:
 				rootView = (ViewGroup) inflater.inflate(R.layout.fragment_server_judges, container, false);
 		}

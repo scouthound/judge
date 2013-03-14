@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
         	setContentView(R.layout.activity_main_landscape);
         // Else use portrait layout
         else
-        	setContentView(R.layout.activity_main_portrait);  
+        	setContentView(R.layout.activity_main);  
     }
 
     @Override
@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
     	return "1234";
     }
     
-    // Sets up the tables to be used for the competition
+    // Sets up the tables to be used for the competition; Currently dummied.
     private boolean createDB()
     {
     	// SQL STATEMENTS!!!!!

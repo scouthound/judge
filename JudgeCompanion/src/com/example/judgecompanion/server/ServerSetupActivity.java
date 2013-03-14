@@ -17,9 +17,10 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class ServerSetupActivity extends FragmentActivity {
-	private static int NUM_PAGES = 3;
+	private static int NUM_PAGES = 4;
 	private ViewPager mPager;
 	private PagerAdapter mPagerAdapter;
 
@@ -48,6 +49,12 @@ public class ServerSetupActivity extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_server, menu);
 		return true;
+	}
+	
+	public void createCompetition(View theView)
+	{
+		// Do what you need to do then kick back to main to go to edit pages
+		this.finish();
 	}
 	
 	/**
