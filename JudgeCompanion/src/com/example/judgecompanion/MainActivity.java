@@ -57,7 +57,7 @@ public class MainActivity extends Activity {
 			startActivity(intent);
 		}
     	else
-    		Toast.makeText(this.getApplicationContext(), "Cannot join competition.", Toast.LENGTH_SHORT).show();
+    		Toast.makeText(this.getApplicationContext(), "Cannot join competition", Toast.LENGTH_SHORT).show();
     }
     
     // Dummy method: returns competition id
