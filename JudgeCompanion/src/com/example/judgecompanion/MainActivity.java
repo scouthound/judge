@@ -1,5 +1,6 @@
 package com.example.judgecompanion;
 
+import com.example.judgecompanion.client.ClientActivity;
 import com.example.judgecompanion.server.ServerSetupActivity;
 
 import android.os.Bundle;
@@ -46,15 +47,23 @@ public class MainActivity extends Activity {
     
     public void joinEvent(View theView)
     {
-    	Toast.makeText(this.getApplicationContext(), "Joining Competition...", Toast.LENGTH_SHORT).show();
-    	//String competition = authenticateUser("userID");
-    	//Intent intent;
+    	Intent intent;
+    	int compId = authenticateUser("userID");
+    	
+    	if(compId != -1) // If all of the tables can be built, go to server activity
+		{
+    		Toast.makeText(this.getApplicationContext(), "Joining Competition " + compId, Toast.LENGTH_SHORT).show();
+			intent = new Intent(this, ClientActivity.class);
+			startActivity(intent);
+		}
+    	else
+    		Toast.makeText(this.getApplicationContext(), "Cannot join competition.", Toast.LENGTH_SHORT).show();
     }
     
     // Dummy method: returns competition id
-    private String authenticateUser(String userId)
+    private int authenticateUser(String userId)
     {
-    	return "1234";
+    	return 1234;
     }
     
     // Sets up the tables to be used for the competition; Currently dummied.

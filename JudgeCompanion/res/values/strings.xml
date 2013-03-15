@@ -14,5 +14,7 @@
     <string name="judges">Judges</string>
     <string name="teams">Teams</string>
     <string name="events">Events</string>
+    <string name="title_activity_client_page_fragment">ClientPageFragment</string>
+    <string name="title_activity_client">ClientActivity</string>
 
 </resources>

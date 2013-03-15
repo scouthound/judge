@@ -30,6 +30,14 @@
             android:name="com.example.judgecompanion.server.fragments.ServerSetupPageFragment"
             android:label="@string/title_activity_server_page_fragment" >
         </activity>
+        <activity
+            android:name="com.example.judgecompanion.client.ClientActivity"
+            android:label="@string/title_activity_client" >
+        </activity>
+        <activity
+            android:name="com.example.judgecompanion.server.fragments.ClientCompetitionPageFragment"
+            android:label="@string/title_activity_client_page_fragment" >
+        </activity>
     </application>
 
 </manifest>
