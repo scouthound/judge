@@ -1,16 +1,12 @@
 package com.example.judgecompanion.server.fragments;
 
 import com.example.judgecompanion.R;
-import com.example.judgecompanion.R.layout;
 
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 // Pages
 public class ServerSetupPageFragment extends Fragment {

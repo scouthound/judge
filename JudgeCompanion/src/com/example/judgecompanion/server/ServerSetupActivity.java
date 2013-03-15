@@ -1,9 +1,6 @@
 package com.example.judgecompanion.server;
 
 import com.example.judgecompanion.R;
-import com.example.judgecompanion.R.id;
-import com.example.judgecompanion.R.layout;
-import com.example.judgecompanion.R.menu;
 import com.example.judgecompanion.server.fragments.ServerSetupPageFragment;
 
 import android.app.ActionBar;
@@ -11,18 +8,13 @@ import android.app.ActionBar.Tab;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.TabHost;
-import android.widget.Toast;
 
 public class ServerSetupActivity extends FragmentActivity {
 	private static int NUM_PAGES = 4;
