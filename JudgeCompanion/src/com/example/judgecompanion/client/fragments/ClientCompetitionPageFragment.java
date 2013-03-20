@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 // Pages
@@ -46,6 +47,25 @@ public class ClientCompetitionPageFragment extends Fragment {
 		{
 			case 1:
 				rootView = (ViewGroup) inflater.inflate(R.layout.fragment_client_events, container, false);
+				List<String> listOfEvents = new ArrayList<String>();
+				listOfEvents.add("Science Fair");
+				listOfEvents.add("Stuff");
+				ListView events = (ListView) rootView.findViewById(R.id.client_events);
+				ArrayAdapter<String> eventAdapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_list_item_1, listOfEvents);
+				events.setAdapter(eventAdapter);
+				events.setTextFilterEnabled(true);
+				events.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView parentView, View childView, int position, long id) {
+						// TODO Auto-generated method stub
+						TextView tv = (TextView) getActivity().findViewById(R.id.client_event_title);
+						ListView lv = (ListView) getActivity().findViewById(R.id.client_events);
+						
+						tv.setText("Active Event: " + lv.getItemAtPosition(position).toString());
+					}
+					
+				});
 				break;
 			case 2:
 				rootView = (ViewGroup) inflater.inflate(R.layout.fragment_client_submit, container, false);
