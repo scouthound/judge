@@ -8,7 +8,9 @@ import android.net.wifi.p2p.WifiP2pManager.Channel;
 
 public class WifiDirectBroadcastReceiver extends BroadcastReceiver {
 
+	@SuppressWarnings("unused")
 	private WifiP2pManager mManager;
+	@SuppressWarnings("unused")
 	private Channel mChannel;
 	//private MyWifiActivity mActivity;
 	private boolean wifiEnabled = false;

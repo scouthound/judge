@@ -1,10 +1,8 @@
 package com.example.judgecompanion.server;
 
-import com.example.judgecompanion.R;
-import com.example.judgecompanion.server.fragments.ServerSetupPageFragment;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -14,61 +12,71 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
-public class ServerSetupActivity extends FragmentActivity {
+import com.example.judgecompanion.R;
+import com.example.judgecompanion.server.fragments.ServerSetupPageFragment;
+
+public class ServerSetupActivity extends FragmentActivity  {
 	private static int NUM_PAGES = 4;
 	private ViewPager mPager;
 	private PagerAdapter mPagerAdapter;
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_server);
-		
+
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPagerAdapter = new ServerPagerAdapter(getFragmentManager());
 		mPager.setAdapter(mPagerAdapter);
 		mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                // When changing pages, reset the action bar actions since they are dependent
-                // on which page is currently active. An alternative approach is to have each
-                // fragment expose actions itself (rather than the activity exposing actions),
-                // but for simplicity, the activity provides the actions in this sample.
-                getActionBar().setSelectedNavigationItem(position);
-            }
-        });
-		
+			@Override
+			public void onPageSelected(int position) {
+				// When changing pages, reset the action bar actions since they
+				// are dependent
+				// on which page is currently active. An alternative approach is
+				// to have each
+				// fragment expose actions itself (rather than the activity
+				// exposing actions),
+				// but for simplicity, the activity provides the actions in this
+				// sample.
+				getActionBar().setSelectedNavigationItem(position);
+			}
+		});
+
 		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		ActionBar.Tab judgesTab = actionBar.newTab().setText("Judges");
 		ActionBar.Tab eventsTab = actionBar.newTab().setText("Events");
 		ActionBar.Tab teamsTab = actionBar.newTab().setText("Teams");
 		ActionBar.Tab finishTab = actionBar.newTab().setText("Finish");
-		
+
 		judgesTab.setTabListener(new ServerTabsListener(0));
 		teamsTab.setTabListener(new ServerTabsListener(1));
 		eventsTab.setTabListener(new ServerTabsListener(2));
 		finishTab.setTabListener(new ServerTabsListener(3));
-		
+
 		actionBar.addTab(judgesTab);
 		actionBar.addTab(teamsTab);
 		actionBar.addTab(eventsTab);
 		actionBar.addTab(finishTab);
-		
+
 		actionBar.setDisplayShowTitleEnabled(false);
 		actionBar.setDisplayShowHomeEnabled(false);
 	}
-	
+
 	class ServerTabsListener implements ActionBar.TabListener {
 		int currentFrag = 0;
-		
-		public ServerTabsListener(int frag)
-		{
+
+		public ServerTabsListener(int frag) {
 			currentFrag = frag;
 		}
-		
+
 		@Override
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
 			// TODO Auto-generated method stub
@@ -85,7 +93,7 @@ public class ServerSetupActivity extends FragmentActivity {
 		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 			// TODO Auto-generated method stub
 		}
-		
+
 	}
 
 	@Override
@@ -94,30 +102,38 @@ public class ServerSetupActivity extends FragmentActivity {
 		getMenuInflater().inflate(R.menu.activity_server, menu);
 		return true;
 	}
-	
-	public void createCompetition(View theView)
-	{
+
+	public void createCompetition(View theView) {
 		// Do what you need to do then kick back to main to go to edit pages
 		this.finish();
 	}
-	
+
 	/**
-     * A simple pager adapter that represents 5 {@link ScreenSlidePageFragment} objects, in
-     * sequence.
-     */
-    private class ServerPagerAdapter extends FragmentStatePagerAdapter {
-        public ServerPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+	 * A simple pager adapter that represents 5 {@link ScreenSlidePageFragment}
+	 * objects, in sequence.
+	 */
+	private class ServerPagerAdapter extends FragmentStatePagerAdapter {
+		public ServerPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
 
-        @Override
-        public Fragment getItem(int position) {
-            return ServerSetupPageFragment.create(position);
-        }
+		@Override
+		public Fragment getItem(int position) {
+			return ServerSetupPageFragment.create(position);
+		}
 
-        @Override
-        public int getCount() {
-            return NUM_PAGES;
-        }
-    }
+		@Override
+		public int getCount() {
+			return NUM_PAGES;
+		}
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return super.onOptionsItemSelected(item);
+	}
+	
+	public void onSavedInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+	}
 }

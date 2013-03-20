@@ -18,5 +18,10 @@
     <string name="title_activity_client">ClientActivity</string>
     <string name="title_activity_team_detail">TeamDetailActivity</string>
     <string name="title_activity_team_detail_dialog_fragment">TeamDetailDialogFragment</string>
+    <string name="message_empty_events">Add New Events</string>
+    <string name="message_empty_judges">Add New Judges</string>
+    <string name="message_empty_teams">Add New Teams</string>
+    <string name="title_activity_new_entry_fragment">NewEntryFragment</string>
+    <string name="action_remove_item">Remove this entry.</string>
 
 </resources>
