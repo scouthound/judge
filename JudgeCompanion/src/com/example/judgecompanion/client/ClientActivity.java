@@ -110,9 +110,6 @@ public class ClientActivity extends FragmentActivity implements TeamDetailDialog
 	{
 		// When you click on a team name or button, populate info and open dialog box
 		TeamDetailDialogFragment teamDetail = new TeamDetailDialogFragment(R.layout.activity_team_detail_dialog_fragment, R.layout.activity_team_detail_dialog_fragment);
-		// STUFF TO POPULATE WITH!
-
-		// END STUFF
 		// Display your ill gotten spoils
         teamDetail.show(getSupportFragmentManager(), "tddf");
 	}
