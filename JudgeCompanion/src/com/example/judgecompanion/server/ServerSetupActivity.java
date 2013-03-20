@@ -2,7 +2,6 @@ package com.example.judgecompanion.server;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -14,7 +13,6 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.judgecompanion.R;
 import com.example.judgecompanion.server.fragments.ServerSetupPageFragment;
