@@ -17,6 +17,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 public class ClientActivity extends FragmentActivity implements TeamDetailDialogFragment.DialogTemplateListener{
 	private static int NUM_PAGES = 3;
@@ -105,7 +106,7 @@ public class ClientActivity extends FragmentActivity implements TeamDetailDialog
 		// When you click on a team name or button, populate info and open dialog box
 		TeamDetailDialogFragment teamDetail = new TeamDetailDialogFragment(R.layout.activity_team_detail_dialog_fragment);
 		// STUFF TO POPULATE WITH!
-		
+
 		// END STUFF
 		// Display your ill gotten spoils
         teamDetail.show(getSupportFragmentManager(), "tddf");

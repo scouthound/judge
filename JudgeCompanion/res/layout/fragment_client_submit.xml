@@ -13,10 +13,10 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="Okay" 
-            android:onClick="createCompetition"/>
+            android:onClick="viewTeam"/>
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/team_members"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

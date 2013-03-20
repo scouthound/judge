@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 public abstract class DialogTemplateFragment extends DialogFragment {
-		View theView = null;
+		protected View theView = null;
 		int xmlID = 0;
 		
 		public DialogTemplateFragment(int layout)
@@ -47,6 +47,7 @@ public abstract class DialogTemplateFragment extends DialogFragment {
 	                       // Do nothing, and dialog framework will cancel the dialog
 	                     }
 	                  });
+	        buildData();
 	           return builder.create();
 		}
 		
@@ -76,4 +77,5 @@ public abstract class DialogTemplateFragment extends DialogFragment {
 	     }
 
 		public abstract void confirm();
+		public abstract void buildData();
 }
