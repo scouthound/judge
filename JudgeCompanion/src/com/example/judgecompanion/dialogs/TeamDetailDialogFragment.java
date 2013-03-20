@@ -17,8 +17,8 @@ import com.example.judgecompanion.dialogs.abstracts.DialogTemplateFragment;
 public class TeamDetailDialogFragment extends DialogTemplateFragment {
 
 	@SuppressLint("ValidFragment")
-	public TeamDetailDialogFragment(int layout) {
-		super(layout);
+	public TeamDetailDialogFragment(int layoutport, int layoutland) {
+		super(layoutport, layoutland);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -37,7 +37,7 @@ public class TeamDetailDialogFragment extends DialogTemplateFragment {
 		TextView name = (TextView) theView.findViewById(R.id.team_name);
 		TextView teammates = (TextView) theView.findViewById(R.id.team_members);
 		name.setText("Team Discovery Channel");
-		teammates.setText("Members:\nSimpson, Bart\nPrince, Martin");
+		teammates.setText("\nMembers:\nSimpson, Bart\nPrince, Martin");
 		
 		ListView events = (ListView) theView.findViewById(R.id.event_list);
 		ArrayAdapter<String> eventAdapter = new ArrayAdapter<String>(theView.getContext(), android.R.layout.simple_list_item_1, listOfEvents);

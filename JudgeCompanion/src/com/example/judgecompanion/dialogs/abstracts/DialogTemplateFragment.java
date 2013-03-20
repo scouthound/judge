@@ -5,30 +5,41 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 
 public abstract class DialogTemplateFragment extends DialogFragment {
 		protected View theView = null;
-		int xmlID = 0;
+		int xmlIDPortrait = 0;
+		int xmlIDLandscape = 0;
 		
-		public DialogTemplateFragment(int layout)
+		public DialogTemplateFragment(int layoutport, int layoutland)
 		{
-			xmlID = layout;
+			xmlIDPortrait = layoutport;
+			xmlIDLandscape = layoutland;
 		}
 		
 		@Override 
 	    public Dialog onCreateDialog(Bundle savedInstanceState) {
+			if(savedInstanceState != null)
+			{
+				xmlIDPortrait = savedInstanceState.getInt("port", 0);
+				xmlIDLandscape = savedInstanceState.getInt("land", 0);
+			}
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 			// Get the layout inflater
 	        LayoutInflater inflater = getActivity().getLayoutInflater();
 
 	        // If no xml ID is given, throw an exception
-	        if (xmlID == 0)
+	        if (xmlIDPortrait == 0 || xmlIDLandscape == 0)
 	        	throw new NullPointerException();
 	        // Save view for later use
-	        theView = inflater.inflate(xmlID, null);
+	        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+	        	theView = inflater.inflate(xmlIDLandscape, null);
+	        else
+	        	theView = inflater.inflate(xmlIDPortrait, null);
 	        
 	     // Inflate and set the layout for the dialog
 	        // Pass null as the parent view because its going in the dialog layout
@@ -74,6 +85,13 @@ public abstract class DialogTemplateFragment extends DialogFragment {
 	             throw new ClassCastException(activity.toString()
 	                     + " must implement DialogTemplateListener");
 	         }
+	     }
+	     
+	     @Override
+	     public void onSaveInstanceState(Bundle savedInstanceState)
+	     {
+	    	 savedInstanceState.putInt("port", xmlIDPortrait);
+	    	 savedInstanceState.putInt("land", xmlIDLandscape);
 	     }
 
 		public abstract void confirm();
