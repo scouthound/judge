@@ -149,10 +149,16 @@ public class ServerSetupPageFragment extends Fragment {
 	}
 
 	private void callNewRowDialog(String objType) {
+		callNewRowDialog(objType, null);
+	}
+
+	private void callNewRowDialog(final String objType, String msg) {
 		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
 		alert.setTitle("Please enter the name for " + objType + " to enter.");
-		// alert.setMessage("Message");
+		if (msg != null) {
+			alert.setMessage("Message");
+		}
 
 		// Set an EditText view to get user input
 		final EditText input = new EditText(getActivity());
@@ -162,7 +168,19 @@ public class ServerSetupPageFragment extends Fragment {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				Editable value = input.getText();
 				entryValue = value.toString();
+				if(validateInput(entryValue))
+				{
 				addItems();
+				} else
+				{
+					callNewRowDialog(objType, "Only letters, digits and spaces are allowed for input.");
+				}
+			}
+
+			private boolean validateInput(String entryValue) {
+				if(entryValue.contains(""));
+				
+				return true;
 			}
 		});
 
@@ -198,7 +216,7 @@ public class ServerSetupPageFragment extends Fragment {
 		if (entryValue.isEmpty()) {
 			entryValue = "No value got passed. :(";
 		}
-		if (!values.contains(entryValue))
+		if (values != null && !values.contains(entryValue))
 			values.add(entryValue);
 		// Set the text in the new row to a random country.
 		((TextView) newView.findViewById(R.id.text1)).setText(entryValue);
@@ -220,7 +238,17 @@ public class ServerSetupPageFragment extends Fragment {
 				// If there are no rows remaining, show the empty
 				// view.
 				if (mContainerView.getChildCount() == 0) {
-					getView().findViewById(android.R.id.empty).setVisibility(View.VISIBLE);
+					switch(mPageNumber){
+					case 1:
+						getView().findViewById(R.id.txt_empty_teams).setVisibility(View.VISIBLE);
+						break;
+					case 2:
+						getView().findViewById(R.id.txt_empty_events).setVisibility(View.VISIBLE);
+						break;
+					default:
+						getView().findViewById(R.id.txt_empty_judges).setVisibility(View.VISIBLE);
+						break;
+					}
 				}
 			}
 		});
