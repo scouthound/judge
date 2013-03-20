@@ -16,5 +16,7 @@
     <string name="events">Events</string>
     <string name="title_activity_client_page_fragment">ClientPageFragment</string>
     <string name="title_activity_client">ClientActivity</string>
+    <string name="title_activity_team_detail">TeamDetailActivity</string>
+    <string name="title_activity_team_detail_dialog_fragment">TeamDetailDialogFragment</string>
 
 </resources>

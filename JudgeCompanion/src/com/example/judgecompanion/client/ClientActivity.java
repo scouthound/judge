@@ -2,6 +2,7 @@ package com.example.judgecompanion.client;
 
 import com.example.judgecompanion.R;
 import com.example.judgecompanion.client.fragments.ClientCompetitionPageFragment;
+import com.example.judgecompanion.dialogs.TeamDetailDialogFragment;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -10,13 +11,14 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.View;
 
-public class ClientActivity extends FragmentActivity {
+public class ClientActivity extends FragmentActivity implements TeamDetailDialogFragment.DialogTemplateListener{
 	private static int NUM_PAGES = 3;
 	private ViewPager mPager;
 	private PagerAdapter mPagerAdapter;
@@ -98,6 +100,17 @@ public class ClientActivity extends FragmentActivity {
 		this.finish();
 	}
 	
+	public void viewTeam(View theView)
+	{
+		// When you click on a team name or button, populate info and open dialog box
+		TeamDetailDialogFragment teamDetail = new TeamDetailDialogFragment(R.layout.activity_team_detail_dialog_fragment);
+		// STUFF TO POPULATE WITH!
+		
+		// END STUFF
+		// Display your ill gotten spoils
+        teamDetail.show(getSupportFragmentManager(), "tddf");
+	}
+	
 	/**
      * A simple pager adapter that represents 5 {@link ScreenSlidePageFragment} objects, in
      * sequence.
@@ -117,4 +130,10 @@ public class ClientActivity extends FragmentActivity {
             return NUM_PAGES;
         }
     }
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog, String result) {
+		// TODO Auto-generated method stub
+		
+	}
 }
