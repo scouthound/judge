@@ -1,12 +1,15 @@
 package com.example.judgecompanion.server.fragments;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Loader;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,9 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.judgecompanion.JudgeOpenHelper;
 import com.example.judgecompanion.R;
+import com.example.judgecompanion.SetupEntry;
+import com.example.judgecompanion.SetupEntry.EntryType;
 
 // Pages
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -29,7 +34,8 @@ public class ServerSetupPageFragment extends Fragment {
 	public static final String ARG_PAGE = "page";
 	private int mPageNumber;
 	private String entryValue = "";
-	private ArrayList<String> values = new ArrayList<String>();
+	private List<SetupEntry> values = new ArrayList<SetupEntry>();
+	private boolean addingExisting = false;
 
 	public static ServerSetupPageFragment create(int pageNumber) {
 		ServerSetupPageFragment fragment = new ServerSetupPageFragment();
@@ -47,31 +53,6 @@ public class ServerSetupPageFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		mPageNumber = getArguments().getInt(ARG_PAGE);
-		if (savedInstanceState != null) {
-			switch (mPageNumber) {
-			case 1:
-				values = savedInstanceState.getStringArrayList("Teams");
-				break;
-			case 2:
-				values = savedInstanceState.getStringArrayList("Events");
-				break;
-			default:
-				if (savedInstanceState.containsKey("Judges")) {
-					values = new ArrayList<String>(savedInstanceState.getStringArrayList("Judges"));
-				} else {
-					Set<String> st = savedInstanceState.keySet();
-					String outString = "Outputting Keys...";
-					for (String str : st) {
-						outString += str + "\n";
-					}
-					outString += "Done...";
-					Toast.makeText(getActivity(), outString, Toast.LENGTH_LONG).show();
-				}
-				break;
-			}
-
-			addExistingValues();
-		}
 	}
 
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -80,18 +61,6 @@ public class ServerSetupPageFragment extends Fragment {
 
 	public void onSavedInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-
-		switch (mPageNumber) {
-		case 1:
-			outState.putStringArrayList("Teams", values);
-			break;
-		case 2:
-			outState.putStringArrayList("Events", values);
-			break;
-		default:
-			outState.putStringArrayList("Judges", values);
-			break;
-		}
 	}
 
 	@Override
@@ -103,7 +72,6 @@ public class ServerSetupPageFragment extends Fragment {
 			break;
 		case 2:
 			rootView = (ViewGroup) inflater.inflate(R.layout.fragment_server_events, container, false);
-
 			break;
 		case 3:
 			rootView = (ViewGroup) inflater.inflate(R.layout.fragment_server_create, container, false);
@@ -111,12 +79,18 @@ public class ServerSetupPageFragment extends Fragment {
 		default:
 			rootView = (ViewGroup) inflater.inflate(R.layout.fragment_server_judges, container, false);
 		}
-
+		/* addExistingValues(rootView); */
 		return rootView;
 	}
 
 	public int getPageNumber() {
 		return mPageNumber;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		addExistingValues(null);
 	}
 
 	@Override
@@ -157,7 +131,7 @@ public class ServerSetupPageFragment extends Fragment {
 
 		alert.setTitle("Please enter the name for " + objType + " to enter.");
 		if (msg != null) {
-			alert.setMessage("Message");
+			alert.setMessage(msg);
 		}
 
 		// Set an EditText view to get user input
@@ -168,47 +142,62 @@ public class ServerSetupPageFragment extends Fragment {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				Editable value = input.getText();
 				entryValue = value.toString();
-				if(validateInput(entryValue))
-				{
-				addItems();
-				} else
-				{
+
+				if (validateInput(entryValue) && !entryValue.isEmpty()) {
+					addItems(null, null);
+				} else {
 					callNewRowDialog(objType, "Only letters, digits and spaces are allowed for input.");
 				}
 			}
 
 			private boolean validateInput(String entryValue) {
-				if(entryValue.contains(""));
-				
-				return true;
+				Pattern p = Pattern.compile("^[^a-z0-9 ]+$", Pattern.CASE_INSENSITIVE);
+				Matcher m = p.matcher(entryValue);
+				return !m.find();
 			}
 		});
 
 		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				// Canceled.
+				switch (mPageNumber) {
+				case 1:
+					getView().findViewById(R.id.txt_empty_teams).setVisibility(View.VISIBLE);
+					break;
+				case 2:
+					getView().findViewById(R.id.txt_empty_events).setVisibility(View.VISIBLE);
+					break;
+				default:
+					getView().findViewById(R.id.txt_empty_judges).setVisibility(View.VISIBLE);
+					break;
+				}
 			}
 		});
 
 		alert.show();
 	}
 
-	public void addItems() {
+	public void addItems(ViewGroup view, SetupEntry ent) {
 		final ViewGroup mContainerView;
 
-		switch (mPageNumber) {
-		case 1:
-			mContainerView = (ViewGroup) getView().findViewById(R.id.container_teams);
-			break;
-		case 2:
-			mContainerView = (ViewGroup) getView().findViewById(R.id.container_events);
-			break;
-		default:
-			mContainerView = (ViewGroup) getView().findViewById(R.id.container_judges);
-			break;
+		if (view == null) {
+			switch (mPageNumber) {
+			case 1:
+				mContainerView = (ViewGroup) getView().findViewById(R.id.container_teams);
+				break;
+			case 2:
+				mContainerView = (ViewGroup) getView().findViewById(R.id.container_events);
+				break;
+			default:
+				mContainerView = (ViewGroup) getView().findViewById(R.id.container_judges);
+				break;
+			}
+			Log.d("FUCK", "View was null.");
+		} else {
+			mContainerView = view;
+			Log.d("FUCK", "View was not null.");
+			return;
 		}
-
-		Log.d("Event", "Event adding...");
 
 		// Instantiate a new "row" view.
 		final ViewGroup newView = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.list_item_layout, mContainerView, false);
@@ -216,29 +205,61 @@ public class ServerSetupPageFragment extends Fragment {
 		if (entryValue.isEmpty()) {
 			entryValue = "No value got passed. :(";
 		}
-		if (values != null && !values.contains(entryValue))
-			values.add(entryValue);
+
+		if (ent == null) {
+			switch (mPageNumber) {
+			case 1:
+				ent = new SetupEntry(entryValue, EntryType.TEAM);
+				break;
+			case 2:
+				ent = new SetupEntry(entryValue, EntryType.EVENT);
+				break;
+			default:
+				ent = new SetupEntry(entryValue, EntryType.JUDGE);
+				break;
+			}
+		}
+
+		if (!values.contains(ent)) {
+			JudgeOpenHelper db = new JudgeOpenHelper(getActivity());
+			db.addEntry(ent);
+		}
+
 		// Set the text in the new row to a random country.
-		((TextView) newView.findViewById(R.id.text1)).setText(entryValue);
+		((TextView) newView.findViewById(R.id.text1)).setText(ent.getEntry());
+		Log.d("FUCK", "Added: " + ent.getEntry());
 
 		// Set a click listener for the "X" button in the row that will
 		// remove the row.
 		newView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				// Remove the row from its parent (the container
-				// view).
-				// Because mContainerView has
-				// android:animateLayoutChanges set to true,
+				// Remove the row from its parent (the container view).
+				// Because mContainerView has android:animateLayoutChanges set
+				// to true,
 				// this removal is automatically animated.
 
 				String str = (String) ((TextView) newView.findViewById(R.id.text1)).getText();
-				values.remove(str);
+				SetupEntry ent;
+				switch (mPageNumber) {
+				case 1:
+					ent = new SetupEntry(str, EntryType.TEAM);
+					break;
+				case 2:
+					ent = new SetupEntry(str, EntryType.EVENT);
+					break;
+				default:
+					ent = new SetupEntry(str, EntryType.JUDGE);
+					break;
+				}
+				JudgeOpenHelper db = new JudgeOpenHelper(getActivity());
+				db.deleteEntry(ent);
+
 				mContainerView.removeView(newView);
 				// If there are no rows remaining, show the empty
 				// view.
 				if (mContainerView.getChildCount() == 0) {
-					switch(mPageNumber){
+					switch (mPageNumber) {
 					case 1:
 						getView().findViewById(R.id.txt_empty_teams).setVisibility(View.VISIBLE);
 						break;
@@ -259,11 +280,49 @@ public class ServerSetupPageFragment extends Fragment {
 		mContainerView.addView(newView, 0);
 	}
 
-	private void addExistingValues() {
-		if (values != null) {
-			for (String s : values) {
-				entryValue = s;
-				addItems();
+	private void addExistingValues(ViewGroup view) {
+		JudgeOpenHelper db = new JudgeOpenHelper(getActivity());
+		int existingEntries = -1;
+		EntryType objType;
+		switch (mPageNumber) {
+		case 1:
+			objType = EntryType.TEAM;
+			break;
+		case 2:
+			objType = EntryType.EVENT;
+			break;
+		default:
+			objType = EntryType.JUDGE;
+			break;
+		}
+		existingEntries = db.getEntryCount(objType);
+		if (existingEntries > 0) {
+			List<SetupEntry> temp = db.getAllEntries(objType);
+			if (!temp.equals(values)) {
+				values = temp;
+				addingExisting = true;
+				for (SetupEntry ent : values) {
+					entryValue = ent.getEntry();
+					Log.d("FUCK", "Calling addItems(" + entryValue + ")");
+					addItems(view, ent);
+				}
+				if (getView() != null) {
+					switch (mPageNumber) {
+					case 1:
+						if (getView().findViewById(R.id.txt_empty_teams) != null)
+							getView().findViewById(R.id.txt_empty_teams).setVisibility(View.GONE);
+						break;
+					case 2:
+						if (getView().findViewById(R.id.txt_empty_events) != null)
+							getView().findViewById(R.id.txt_empty_events).setVisibility(View.GONE);
+						break;
+					default:
+						if (getView().findViewById(R.id.txt_empty_judges) != null)
+							getView().findViewById(R.id.txt_empty_judges).setVisibility(View.GONE);
+						break;
+					}
+				}
+				addingExisting = false;
 			}
 		}
 	}

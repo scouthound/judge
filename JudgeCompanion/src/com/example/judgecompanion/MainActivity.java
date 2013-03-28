@@ -99,8 +99,7 @@ public class MainActivity extends Activity {
 		// SQL STATEMENTS!!!!!
 		// Don't forget to log what SQL statements are being used
 		Log.d("SQL", "Initialize SQL DB");
-		JudgeOpenHelper jDB = new JudgeOpenHelper(this);
-		jDB.close();
+		//JudgeOpenHelper jDB = new JudgeOpenHelper(this);
 		return true;
 	}
 
