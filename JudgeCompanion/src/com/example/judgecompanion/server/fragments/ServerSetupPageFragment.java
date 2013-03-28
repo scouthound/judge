@@ -9,7 +9,6 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
-import android.content.Loader;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -322,7 +321,9 @@ public class ServerSetupPageFragment extends Fragment {
 						break;
 					}
 				}
-				addingExisting = false;
+				//addingExisting = false;
+				if(addingExisting)
+					addingExisting = !addingExisting;
 			}
 		}
 	}

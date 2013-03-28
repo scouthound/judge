@@ -1,12 +1,5 @@
 package com.example.judgecompanion.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.example.judgecompanion.R;
-import com.example.judgecompanion.client.fragments.ClientCompetitionPageFragment;
-import com.example.judgecompanion.dialogs.TeamDetailDialogFragment;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Fragment;
@@ -20,9 +13,10 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+
+import com.example.judgecompanion.R;
+import com.example.judgecompanion.client.fragments.ClientCompetitionPageFragment;
+import com.example.judgecompanion.dialogs.TeamDetailDialogFragment;
 
 public class ClientActivity extends FragmentActivity implements TeamDetailDialogFragment.DialogTemplateListener{
 	private static int NUM_PAGES = 3;

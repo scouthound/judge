@@ -3,12 +3,8 @@ package com.example.judgecompanion.client.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.judgecompanion.R;
-import com.example.judgecompanion.client.ClientActivity;
-import com.example.judgecompanion.dialogs.TeamDetailDialogFragment;
-
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +12,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.example.judgecompanion.R;
+import com.example.judgecompanion.client.ClientActivity;
 
 // Pages
 public class ClientCompetitionPageFragment extends Fragment {
@@ -57,7 +55,7 @@ public class ClientCompetitionPageFragment extends Fragment {
 				events.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 					@Override
-					public void onItemClick(AdapterView parentView, View childView, int position, long id) {
+					public void onItemClick(AdapterView<?> parentView, View childView, int position, long id) {
 						// TODO Auto-generated method stub
 						TextView tv = (TextView) getActivity().findViewById(R.id.client_event_title);
 						ListView lv = (ListView) getActivity().findViewById(R.id.client_events);
@@ -85,7 +83,7 @@ public class ClientCompetitionPageFragment extends Fragment {
 				teams.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 					@Override
-					public void onItemClick(AdapterView parentView, View childView, int position, long id) {
+					public void onItemClick(AdapterView<?> parentView, View childView, int position, long id) {
 						// TODO Auto-generated method stub
 						ClientActivity ca = (ClientActivity) getActivity();
 						ca.viewTeam(parentView);
