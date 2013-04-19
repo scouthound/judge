@@ -5,43 +5,55 @@
     tools:context=".MainActivity" >
 
     <TextView
+        android:id="@+id/add_judge_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/created_by"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/imageView1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="48dp"
         android:text="@string/title_screen"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="34dp"
+        android:src="@drawable/ic_titie_image" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/finalize_competition_button"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/create_button" 
-        android:onClick="createEvent" />
+        android:layout_above="@+id/add_judge_name"
+        android:layout_marginBottom="22dp"
+        android:layout_toLeftOf="@+id/imageView1"
+        android:onClick="createEvent"
+        android:text="@string/create_button" />
 
     <Button
         android:id="@+id/button2"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
-        android:layout_centerHorizontal="true"
-        android:text="@string/join_button"
-        android:onClick="joinEvent" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="@string/created_by"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_alignBaseline="@+id/finalize_competition_button"
+        android:layout_alignBottom="@+id/finalize_competition_button"
+        android:layout_toRightOf="@+id/imageView1"
+        android:onClick="joinEvent"
+        android:text="@string/join_button" />
 
 </RelativeLayout>

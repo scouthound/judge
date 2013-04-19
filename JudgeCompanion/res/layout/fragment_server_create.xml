@@ -4,25 +4,44 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="122dp" >
-
-        <Button
-            android:id="@+id/createComp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="Okay" 
-            android:onClick="createCompetition"/>
+        android:layout_height="164dp" >
 
         <TextView
-            android:id="@+id/team_members"
+            android:id="@+id/build_competition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:text="Create Competition?"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:text="Build Competition"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/build_competition_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/build_competition"
+            android:layout_centerHorizontal="true"
+            android:onClick="createCompetition"
+            android:text="Build" />
+
+        <TextView
+            android:id="@+id/finalize_competition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/build_competition_button"
+            android:layout_centerHorizontal="true"
+            android:text="Finalize Competition"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/finalize_competition_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/finalize_competition"
+            android:layout_centerHorizontal="true"
+            android:text="Finalize" />
 
     </RelativeLayout>
 

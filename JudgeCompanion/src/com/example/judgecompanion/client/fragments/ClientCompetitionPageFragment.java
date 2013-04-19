@@ -71,6 +71,7 @@ public class ClientCompetitionPageFragment extends Fragment {
 			default:
 				rootView = (ViewGroup) inflater.inflate(R.layout.fragment_client_teams, container, false);
 				List<String> listOfTeams = new ArrayList<String>();
+				// TODO: This must be able to dynamically allocate and display teams.
 				listOfTeams.add("Team Discovery Channel: 150 pts");
 				listOfTeams.add("Purple Monkey Dishwasher: 50 pts");
 				listOfTeams.add("Pin Pals: 50 pts");

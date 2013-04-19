@@ -7,7 +7,7 @@
         android:layout_height="122dp" >
 
         <Button
-            android:id="@+id/createComp"
+            android:id="@+id/build_competition_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -16,7 +16,7 @@
             android:onClick="createCompetition"/>
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/add_judge_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"

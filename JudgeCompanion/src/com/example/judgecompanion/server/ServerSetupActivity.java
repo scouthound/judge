@@ -7,6 +7,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,9 +16,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.example.judgecompanion.R;
+import com.example.judgecompanion.dialogs.AddJudgeDialogFragment;
+import com.example.judgecompanion.dialogs.abstracts.DialogTemplateFragment;
 import com.example.judgecompanion.server.fragments.ServerSetupPageFragment;
 
-public class ServerSetupActivity extends FragmentActivity  {
+public class ServerSetupActivity extends FragmentActivity implements AddJudgeDialogFragment.DialogTemplateListener{
 	private static int NUM_PAGES = 4;
 	private ViewPager mPager;
 	private PagerAdapter mPagerAdapter;
@@ -133,5 +136,11 @@ public class ServerSetupActivity extends FragmentActivity  {
 	public void onSavedInstanceState(Bundle outState)
 	{
 		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog, String result) {
+		// TODO Auto-generated method stub
+		
 	}
 }

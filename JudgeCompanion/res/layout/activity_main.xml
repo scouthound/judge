@@ -4,45 +4,54 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="74dp"
-        android:text="@string/title_screen"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <Button
-        android:id="@+id/button1"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="142dp"
-        android:text="@string/create_button"
-        android:onClick="createEvent" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button2"
-        android:layout_below="@+id/button2"
-        android:layout_marginTop="42dp"
-        android:text="@string/created_by"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
     <Button
         android:id="@+id/button2"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
+        android:layout_below="@+id/finalize_competition_button"
         android:layout_centerHorizontal="true"
-        android:text="@string/join_button"
-        android:onClick="joinEvent" />
+        android:onClick="joinEvent"
+        android:text="@string/join_button" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/title_screen"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/title"
+        android:layout_alignLeft="@+id/title"
+        android:layout_alignRight="@+id/title"
+        android:src="@drawable/ic_titie_image" />
+
+    <Button
+        android:id="@+id/finalize_competition_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:onClick="createEvent"
+        android:text="@string/create_button" />
+
+    <TextView
+        android:id="@+id/add_judge_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/finalize_competition_button"
+        android:layout_alignParentBottom="true"
+        android:text="@string/created_by"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

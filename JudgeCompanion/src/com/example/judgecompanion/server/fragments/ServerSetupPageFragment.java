@@ -26,6 +26,9 @@ import com.example.judgecompanion.JudgeOpenHelper;
 import com.example.judgecompanion.R;
 import com.example.judgecompanion.SetupEntry;
 import com.example.judgecompanion.SetupEntry.EntryType;
+import com.example.judgecompanion.dialogs.AddJudgeDialogFragment;
+import com.example.judgecompanion.dialogs.abstracts.DialogTemplateFragment;
+import com.example.judgecompanion.server.ServerSetupActivity;
 
 // Pages
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -102,15 +105,15 @@ public class ServerSetupPageFragment extends Fragment {
 
 			switch (mPageNumber) {
 			case 1:
-				getView().findViewById(R.id.txt_empty_teams).setVisibility(View.GONE);
+				//getView().findViewById(R.id.txt_empty_teams).setVisibility(View.GONE);
 				dataToAdd = "Teams";
 				break;
 			case 2:
-				getView().findViewById(R.id.txt_empty_events).setVisibility(View.GONE);
+				//getView().findViewById(R.id.txt_empty_events).setVisibility(View.GONE);
 				dataToAdd = "Events";
 				break;
 			default:
-				getView().findViewById(R.id.txt_empty_judges).setVisibility(View.GONE);
+				//getView().findViewById(R.id.txt_empty_judges).setVisibility(View.GONE);
 				dataToAdd = "Judges";
 				break;
 			}
@@ -122,9 +125,26 @@ public class ServerSetupPageFragment extends Fragment {
 	}
 
 	private void callNewRowDialog(String objType) {
-		callNewRowDialog(objType, null);
+		// When you click on the add button, it will select the proper 
+		ServerSetupActivity ssa = (ServerSetupActivity) this.getActivity();
+		DialogTemplateFragment addDialog = null;
+		// Display your ill gotten spoils
+		switch(mPageNumber){
+			case 0:	// Add Judges
+				addDialog = new AddJudgeDialogFragment(R.layout.dialog_add_judge, R.layout.dialog_add_judge);
+				break;
+			case 1:	// Add Teams
+				addDialog = new AddJudgeDialogFragment(R.layout.dialog_add_team, R.layout.dialog_add_team);
+				break;
+			case 2: // Add Events
+				addDialog = new AddJudgeDialogFragment(R.layout.dialog_add_event, R.layout.dialog_add_event);
+				break;
+		}
+		if(addDialog != null)
+        	addDialog.show(ssa.getSupportFragmentManager(), objType);
 	}
 
+	/*
 	private void callNewRowDialog(final String objType, String msg) {
 		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
@@ -174,7 +194,7 @@ public class ServerSetupPageFragment extends Fragment {
 		});
 
 		alert.show();
-	}
+	}*/
 
 	public void addItems(ViewGroup view, SetupEntry ent) {
 		final ViewGroup mContainerView;
