@@ -4,10 +4,10 @@ import android.annotation.SuppressLint;
 import com.example.judgecompanion.dialogs.abstracts.DialogTemplateFragment;
 
 @SuppressLint("ValidFragment")
-public class AddJudgeDialogFragment extends DialogTemplateFragment {
+public class AddEventDialogFragment extends DialogTemplateFragment {
 
 	@SuppressLint("ValidFragment")
-	public AddJudgeDialogFragment(int layoutport, int layoutland) {
+	public AddEventDialogFragment(int layoutport, int layoutland) {
 		super(layoutport, layoutland);
 		// TODO Auto-generated constructor stub
 	}

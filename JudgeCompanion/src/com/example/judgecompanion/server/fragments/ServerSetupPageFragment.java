@@ -26,7 +26,9 @@ import com.example.judgecompanion.JudgeOpenHelper;
 import com.example.judgecompanion.R;
 import com.example.judgecompanion.SetupEntry;
 import com.example.judgecompanion.SetupEntry.EntryType;
+import com.example.judgecompanion.dialogs.AddEventDialogFragment;
 import com.example.judgecompanion.dialogs.AddJudgeDialogFragment;
+import com.example.judgecompanion.dialogs.AddTeamDialogFragment;
 import com.example.judgecompanion.dialogs.abstracts.DialogTemplateFragment;
 import com.example.judgecompanion.server.ServerSetupActivity;
 
@@ -134,10 +136,10 @@ public class ServerSetupPageFragment extends Fragment {
 				addDialog = new AddJudgeDialogFragment(R.layout.dialog_add_judge, R.layout.dialog_add_judge);
 				break;
 			case 1:	// Add Teams
-				addDialog = new AddJudgeDialogFragment(R.layout.dialog_add_team, R.layout.dialog_add_team);
+				addDialog = new AddTeamDialogFragment(R.layout.dialog_add_team, R.layout.dialog_add_team);
 				break;
 			case 2: // Add Events
-				addDialog = new AddJudgeDialogFragment(R.layout.dialog_add_event, R.layout.dialog_add_event);
+				addDialog = new AddEventDialogFragment(R.layout.dialog_add_event, R.layout.dialog_add_event);
 				break;
 		}
 		if(addDialog != null)
