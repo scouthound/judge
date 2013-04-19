@@ -88,6 +88,13 @@ public abstract class DialogTemplateFragment extends DialogFragment {
 	     }
 	     
 	     @Override
+	     public void onPause()
+	     {
+	    	 super.onPause();
+	    	 this.dismiss();
+	     }
+	     
+	     @Override
 	     public void onSaveInstanceState(Bundle savedInstanceState)
 	     {
 	    	 savedInstanceState.putInt("port", xmlIDPortrait);
