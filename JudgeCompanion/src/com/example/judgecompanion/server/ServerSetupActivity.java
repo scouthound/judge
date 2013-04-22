@@ -17,7 +17,6 @@ import android.view.View;
 
 import com.example.judgecompanion.R;
 import com.example.judgecompanion.dialogs.AddJudgeDialogFragment;
-import com.example.judgecompanion.dialogs.abstracts.DialogTemplateFragment;
 import com.example.judgecompanion.server.fragments.ServerSetupPageFragment;
 
 public class ServerSetupActivity extends FragmentActivity implements AddJudgeDialogFragment.DialogTemplateListener{
