@@ -9,12 +9,13 @@
         android:layout_width="76dp"
         android:layout_height="145dp"
         android:scaleType="fitStart"
+        android:contentDescription="@string/logo_description_general"
         android:src="@drawable/ic_add_team" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
+<!--     <LinearLayout -->
+<!--         android:layout_width="match_parent" -->
+<!--         android:layout_height="match_parent" -->
+<!--         android:orientation="vertical" > -->
 
         <ScrollView
             android:layout_width="fill_parent"
@@ -29,13 +30,14 @@
                     android:id="@+id/add_team_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Team Name"
+                    android:text="@string/add_team_name"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <EditText
                     android:id="@+id/add_team_name_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
                     android:ems="10" >
 
                     <requestFocus />
@@ -45,29 +47,31 @@
                     android:id="@+id/add_team_member"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Team Members"
+                    android:text="@string/add_team_members"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <EditText
                     android:id="@+id/add_team_member_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
                     android:ems="10" />
 
                 <TextView
                     android:id="@+id/add_team_institution"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Institution"
+                    android:text="@string/add_team_institution"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <EditText
                     android:id="@+id/add_team_institution_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textCapWords"
                     android:ems="10" />
             </LinearLayout>
         </ScrollView>
-    </LinearLayout>
+<!--     </LinearLayout> -->
 
 </LinearLayout>

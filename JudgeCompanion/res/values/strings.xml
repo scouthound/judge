@@ -38,6 +38,11 @@
     <string name="add_judge_email">E-mail</string>
     <string name="add_judge_password">Password</string>
 
+    <!-- Team Setup -->
+    <string name="add_team_name">Team Name</string>
+    <string name="add_team_members">Team Members</string>
+    <string name="add_team_institution">Institution</string>
+    
     <!-- General -->
 
     <string name="logo_description_general">Logo</string>
