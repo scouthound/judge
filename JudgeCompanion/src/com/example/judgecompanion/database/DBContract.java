@@ -16,7 +16,7 @@ public class DBContract {
 		public static final String COLUMN_NAME_NAME = "Name";
 		public static final String COLUMN_TYPE_NAME = "TEXT";
 
-		public static final String COLUMN_NAME_DESCRIPTION = "Name";
+		public static final String COLUMN_NAME_DESCRIPTION = "Description";
 		public static final String COLUMN_TYPE_DESCRIPTION = "TEXT";
 
 		public static final String COLUMN_NAME_SCORE = "Score";
@@ -82,13 +82,13 @@ public class DBContract {
 		public static final String TABLE_NAME = "Scores";
 		
 		public static final String COLUMN_NAME_EVENT_ID = "event_id";
-		public static final String COLUMN_TYPE_EVENT_ID = "INT FOREIGN KEY references " + Events.TABLE_NAME + "(" + Events._ID + ")";
+		public static final String COLUMN_TYPE_EVENT_ID = "INT references " + Events.TABLE_NAME + "(" + Events._ID + ")";
 		
 		public static final String COLUMN_NAME_TEAM_ID = "team_id";
-		public static final String COLUMN_TYPE_TEAM_ID = "INT FOREIGN KEY references " + Teams.TABLE_NAME + "(" + Teams._ID + ")";
+		public static final String COLUMN_TYPE_TEAM_ID = "INT references " + Teams.TABLE_NAME + "(" + Teams._ID + ")";
 		
 		public static final String COLUMN_NAME_JUDGE_ID = "judge_id";
-		public static final String COLUMN_TYPE_JUDGE_ID = "INT FOREIGN KEY references " + Judges.TABLE_NAME + "(" + Judges._ID + ")";
+		public static final String COLUMN_TYPE_JUDGE_ID = "INT references " + Judges.TABLE_NAME + "(" + Judges._ID + ")";
 		
 		public static final String COLUMN_NAME_TIME = "time";
 		public static final String COLUMN_TYPE_TIME = "INTEGER";

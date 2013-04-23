@@ -90,4 +90,9 @@ public class Judges {
 	{
 		return _password;
 	}
+	
+	public String toString()
+	{
+		return _name;
+	}
 }

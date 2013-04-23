@@ -97,4 +97,9 @@ public class Events {
 	{
 		return _scored;
 	}
+	
+	public String toString()
+	{
+		return _name;
+	}
 }

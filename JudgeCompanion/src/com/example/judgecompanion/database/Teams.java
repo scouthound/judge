@@ -92,6 +92,16 @@ public class Teams {
 		return _members;
 	}
 	
+	public String getMemberListString()
+	{
+		StringBuilder sb = new StringBuilder();
+		for (String t : _members) {
+			sb.append(t);
+		}
+		
+		return sb.toString();
+	}
+	
 	/**
 	 * Add member to the member list
 	 * @param member
@@ -108,5 +118,13 @@ public class Teams {
 	public void removeMember(String member)
 	{
 		_members.remove(member);
+	}
+	
+	/**
+	 * Returns a String containing the Team Name
+	 */
+	public String toString()
+	{
+		return _name;
 	}
 }

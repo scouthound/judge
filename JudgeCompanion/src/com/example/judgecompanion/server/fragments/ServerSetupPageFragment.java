@@ -1,26 +1,26 @@
 package com.example.judgecompanion.server.fragments;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
-import com.example.judgecompanion.JudgeOpenHelper;
 import com.example.judgecompanion.R;
-import com.example.judgecompanion.SetupEntry;
-import com.example.judgecompanion.SetupEntry.EntryType;
 import com.example.judgecompanion.database.DBHelper;
 import com.example.judgecompanion.database.Events;
 import com.example.judgecompanion.database.Judges;
@@ -34,11 +34,13 @@ import com.example.judgecompanion.server.ServerSetupActivity;
 // Pages
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 public class ServerSetupPageFragment extends Fragment {
+	@SuppressWarnings("unused")
 	private DBHelper dbs;
 	public static final String ARG_PAGE = "page";
 	private int mPageNumber;
-	private String entryValue = "";
-	private List<SetupEntry> values = new ArrayList<SetupEntry>();
+
+	// private String entryValue = "";
+	// private List<SetupEntry> values = new ArrayList<SetupEntry>();
 
 	public static ServerSetupPageFragment create(int pageNumber) {
 		ServerSetupPageFragment fragment = new ServerSetupPageFragment();
@@ -94,7 +96,7 @@ public class ServerSetupPageFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		addExistingValues(null);
+		// addExistingValues(null);
 	}
 
 	@Override
@@ -146,228 +148,152 @@ public class ServerSetupPageFragment extends Fragment {
 			addDialog.show(ssa.getSupportFragmentManager(), objType);
 	}
 
-	public void addItems(ViewGroup view, SetupEntry ent) {
-		final ViewGroup mContainerView;
-
-		if (view == null) {
-			switch (mPageNumber) {
-			case 1:
-				mContainerView = (ViewGroup) getView().findViewById(R.id.container_teams);
-				break;
-			case 2:
-				mContainerView = (ViewGroup) getView().findViewById(R.id.container_events);
-				break;
-			default:
-				mContainerView = (ViewGroup) getView().findViewById(R.id.container_judges);
-				break;
-			}
-			Log.d("WHOOPS", "View was null.");
-		} else {
-			mContainerView = view;
-			Log.d("WHOOPS", "View was not null.");
-			return;
-		}
-
-		// Instantiate a new "row" view.
-		final ViewGroup newView = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.list_item_layout, mContainerView, false);
-
-		if (entryValue.isEmpty()) {
-			entryValue = "No value got passed. :(";
-		}
-
-		if (ent == null) {
-			switch (mPageNumber) {
-			case 1:
-				ent = new SetupEntry(entryValue, EntryType.TEAM);
-				break;
-			case 2:
-				ent = new SetupEntry(entryValue, EntryType.EVENT);
-				break;
-			default:
-				ent = new SetupEntry(entryValue, EntryType.JUDGE);
-				break;
-			}
-		}
-
-		if (!values.contains(ent)) {
-			JudgeOpenHelper db = new JudgeOpenHelper(getActivity());
-			db.addEntry(ent);
-		}
-
-		// Set the text in the new row to a random country.
-		((TextView) newView.findViewById(R.id.text1)).setText(ent.getEntry());
-		Log.d("WHOOPS", "Added: " + ent.getEntry());
-
-		// Set a click listener for the "X" button in the row that will
-		// remove the row.
-		newView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				// Remove the row from its parent (the container view).
-				// Because mContainerView has
-				// android:animateLayoutChanges set
-				// to true,
-				// this removal is automatically animated.
-
-				String str = (String) ((TextView) newView.findViewById(R.id.text1)).getText();
-				SetupEntry ent;
-				switch (mPageNumber) {
-				case 1:
-					ent = new SetupEntry(str, EntryType.TEAM);
-					break;
-				case 2:
-					ent = new SetupEntry(str, EntryType.EVENT);
-					break;
-				default:
-					ent = new SetupEntry(str, EntryType.JUDGE);
-					break;
-				}
-				JudgeOpenHelper db = new JudgeOpenHelper(getActivity());
-				db.deleteEntry(ent);
-
-				mContainerView.removeView(newView);
-				// If there are no rows remaining, show the empty
-				// view.
-				if (mContainerView.getChildCount() == 0) {
-					switch (mPageNumber) {
-					case 1:
-						getView().findViewById(R.id.txt_empty_teams).setVisibility(View.VISIBLE);
-						break;
-					case 2:
-						getView().findViewById(R.id.txt_empty_events).setVisibility(View.VISIBLE);
-						break;
-					default:
-						getView().findViewById(R.id.txt_empty_judges).setVisibility(View.VISIBLE);
-						break;
-					}
-				}
-			}
-		});
-
-		// Because mContainerView has android:animateLayoutChanges set to
-		// true, adding this view is automatically animated.
-		mContainerView.addView(newView, 0);
-	}
-
-	private void addExistingValues(ViewGroup view) {
-		DBHelper dbs = DBHelper.getInstance(getActivity());
-		switch (mPageNumber) {
-		case 1:
-			ArrayList<Teams> tms = dbs.getAllTeams();
-			if (tms.size() > 0) {
-				addTeams(tms);
-			}
-			break;
-		case 2:
-			ArrayList<Events> evnts = dbs.getAllEvents();
-			if (evnts.size() > 0) {
-				addEvents(evnts);
-			}
-			break;
-		default:
-			ArrayList<Judges> jdgs = dbs.getAllJudges();
-			if (jdgs.size() > 0) {
-				addJudges(jdgs);
-			}
-			break;
-		}
-
-		/*
-		 * existingEntries = db.getEntryCount(objType); if (existingEntries > 0)
-		 * { List<SetupEntry> temp = db.getAllEntries(objType); if
-		 * (!temp.equals(values)) { values = temp; addingExisting = true; for
-		 * (SetupEntry ent : values) { entryValue = ent.getEntry();
-		 * Log.d("WHOOPS", "Calling addItems(" + entryValue + ")");
-		 * addItems(view, ent); } if (getView() != null) { switch (mPageNumber)
-		 * { case 1: if (getView().findViewById(R.id.txt_empty_teams) != null)
-		 * getView().findViewById(R.id.txt_empty_teams)
-		 * .setVisibility(View.GONE); break; case 2: if
-		 * (getView().findViewById(R.id.txt_empty_events) != null)
-		 * getView().findViewById(R.id.txt_empty_events)
-		 * .setVisibility(View.GONE); break; default: if
-		 * (getView().findViewById(R.id.txt_empty_judges) != null)
-		 * getView().findViewById(R.id.txt_empty_judges)
-		 * .setVisibility(View.GONE); break; } } // addingExisting = false; if
-		 * (addingExisting) addingExisting = !addingExisting; } }
-		 */
-	}
-
-	private void addJudges(ArrayList<Judges> jdgs) {
-		getView().findViewById(R.id.txt_empty_judges).setVisibility(View.GONE);
-		final ViewGroup mContainerView = (ViewGroup) getView().findViewById(R.id.container_judges);
-		final ViewGroup newView = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.list_item_layout, mContainerView, false);
-		for (final Judges js : jdgs) {
-			TextView tvJudges = new TextView(getActivity());
-			tvJudges.setText(js.getName().toString());
-			tvJudges.setTag(js);
-			tvJudges.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
-					adb.setTitle(js.getName() + " Details");
-					adb.setMessage("Name: " + js.getName() + "\nInstitution: " + js.getInstitution() + "\nEmail: " + js.getEmail()
-							+ "\nPassword Assigned: " + js.getPassword());
-					adb.show();
-				}
-			});
-			newView.addView(tvJudges);
-		}
-	}
-
-	private void addEvents(ArrayList<Events> evnts) {
-		getView().findViewById(R.id.txt_empty_events).setVisibility(View.GONE);
-		final ViewGroup mContainerView = (ViewGroup) getView().findViewById(R.id.container_events);
-		final ViewGroup newView = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.list_item_layout, mContainerView, false);
-		for (final Events et : evnts) {
-			TextView tvEvent = new TextView(getActivity());
-			tvEvent.setText(et.getName().toString());
-			tvEvent.setTag(et);
-			tvEvent.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
-					adb.setTitle(et.getName() + " Details");
-					adb.setMessage("Name: " + et.getName() + "\nDescription: " + et.getDescription() + "\nTimed: " + String.valueOf(et.isTimed())
-							+ "\nScored: " + String.valueOf(et.isScored()));
-					adb.show();
-				}
-			});
-			newView.addView(tvEvent);
-		}
-	}
-
-	private void addTeams(ArrayList<Teams> tms) {
-		getView().findViewById(R.id.txt_empty_events).setVisibility(View.GONE);
-		final ViewGroup mContainerView = (ViewGroup) getView().findViewById(R.id.container_events);
-		final ViewGroup newView = (ViewGroup) LayoutInflater.from(getActivity()).inflate(R.layout.list_item_layout, mContainerView, false);
-		for (final Teams tm : tms) {
-			TextView tvTeam = new TextView(getActivity());
-			tvTeam.setText(tm.getTeamName().toString());
-			tvTeam.setTag(tm);
-			tvTeam.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					StringBuilder sb = new StringBuilder();
-					for (String t : tm.getMemberList()) {
-						sb.append(t + "\n");
-					}
-					AlertDialog.Builder adb = new AlertDialog.Builder(getActivity());
-					adb.setTitle(tm.getTeamName() + " Details");
-					adb.setMessage("Name: " + tm.getTeamName() + "\nInstitution: " + tm.getInstitution() + "\nMembers:\n" + sb.toString());
-					adb.show();
-				}
-			});
-			newView.addView(tvTeam);
-		}
-	}
-
-	/*
-	 * public DBHelper getDbs() { return dbs; }
+	/**
+	 * Checks DB if there are values to be added to the current view.
 	 * 
-	 * 
-	 * public void setDbs(DBHelper dbs) { this.dbs = dbs; }
+	 * @param view
+	 *            - Tabgroup to which values are to be added.
 	 */
+	private void addExistingValues(ViewGroup view) {
+		if (view != null) {
+			DBHelper dbs = DBHelper.getInstance(getActivity());
+			switch (mPageNumber) {
+			case 1:
+				if (dbs.getTeamCount() > 0) {
+					addTeams(dbs.getAllTeams(), view);
+				}
+				break;
+			case 2:
+				if (dbs.getEventCount() > 0) {
+					addEvents(dbs.getAllEvents(), view);
+				}
+				break;
+			default:
+				if (dbs.getJudgeCount() > 0) {
+					addJudges(dbs.getAllJudges(), view);
+				}
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Add Judges from the DB
+	 * 
+	 * @param jdgs
+	 *            - List of Judges
+	 * @param view
+	 *            - View to add judges to.
+	 */
+	private void addJudges(ArrayList<Judges> jdgs, ViewGroup view) {
+		if (view != null && view.findViewById(R.id.txt_empty_judges) != null) {
+			view.findViewById(R.id.txt_empty_judges).setVisibility(View.GONE);
+			final ListView mContainerView = (ListView) view.findViewById(R.id.container_judges);
+
+			final ArrayAdapter<Judges> judgeAdapter = new ArrayAdapter<Judges>(view.getContext(), android.R.layout.simple_list_item_1, jdgs);
+			mContainerView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					int pos = arg2;
+					if (pos >= 0) {
+						Judges j = judgeAdapter.getItem(pos);
+						AlertDialog.Builder abr = new AlertDialog.Builder(getActivity());
+						abr.setTitle("Judge Information");
+						abr.setMessage("Name: " + j.getName() + "\nInstitution: " + j.getInstitution() + "\nEmail: " + j.getEmail());
+						abr.show();
+					}
+				}
+			});
+
+			mContainerView.setOnItemLongClickListener(new OnItemLongClickListener() {
+				@Override
+				public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					int pos = arg2;
+					if (pos >= 0) {
+						Judges j = judgeAdapter.getItem(pos);
+						Toast.makeText(getActivity(), "Passowrd: " + j.getPassword(), Toast.LENGTH_LONG).show();
+					}
+					return false;
+				}
+			});
+			mContainerView.setAdapter(judgeAdapter);
+			mContainerView.setTextFilterEnabled(true);
+
+		}
+	}
+
+	private void addEvents(ArrayList<Events> evnts, ViewGroup view) {
+		if (view != null && view.findViewById(R.id.txt_empty_events) != null) {
+			view.findViewById(R.id.txt_empty_events).setVisibility(View.GONE);
+			final ListView mContainerView = (ListView) view.findViewById(R.id.container_events);
+			final ArrayAdapter<Events> eventsAdapter = new ArrayAdapter<Events>(view.getContext(), android.R.layout.simple_list_item_1, evnts);
+			mContainerView.setAdapter(eventsAdapter);
+			mContainerView.setTextFilterEnabled(true);
+
+			mContainerView.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					if (arg2 >= 0) {
+						Events et = eventsAdapter.getItem(arg2);
+						AlertDialog.Builder abr = new AlertDialog.Builder(getActivity());
+						abr.setTitle("Event Information");
+						abr.setMessage("Name: " + et.getName() + "\nDescription: " + et.getDescription() + "\n Timed: "
+								+ (et.isTimed() ? "Yes" : "No") + "\n Scored:" + (et.isScored() ? "Yes" : "No"));
+						abr.show();
+					}
+				}
+			});
+
+			mContainerView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+				@Override
+				public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					if (arg2 >= 0) {
+						Events et = eventsAdapter.getItem(arg2);
+						AlertDialog.Builder abr = new AlertDialog.Builder(getActivity());
+						abr.setTitle("Event Information");
+						abr.setMessage("Name: " + et.getName() + "\nDescription: " + et.getDescription() + "\n Timed: "
+								+ (et.isTimed() ? "Yes" : "No") + "\n Scored:" + (et.isScored() ? "Yes" : "No"));
+						abr.show();
+					}
+					return false;
+				}
+			});
+		}
+	}
+
+	private void addTeams(ArrayList<Teams> tms, ViewGroup view) {
+		if (view != null && view.findViewById(R.id.txt_empty_events) != null) {
+			view.findViewById(R.id.txt_empty_events).setVisibility(View.GONE);
+			final ListView mContainerView = (ListView) view.findViewById(R.id.container_events);
+			final ArrayAdapter<Teams> teamsAdapter = new ArrayAdapter<Teams>(view.getContext(), android.R.layout.simple_list_item_1, tms);
+			mContainerView.setAdapter(teamsAdapter);
+			mContainerView.setTextFilterEnabled(true);
+			
+			mContainerView.setOnItemClickListener(new OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					if(arg2 >= 0)
+					{
+						Teams t = teamsAdapter.getItem(arg2);
+						AlertDialog.Builder abr = new AlertDialog.Builder(getActivity());
+						abr.setTitle("Team Details");
+						ArrayList<String> mList = t.getMemberList();
+						String memList = "";
+						for(int i = 0; i <= mList.size(); i++)
+						{
+							memList += "\n" + (i+1) + ". " + mList.get(i);
+						}
+						
+						abr.setMessage("Team Name: " + t.getTeamName() + "\nInstitution: " + t.getInstitution() + "\nTeam Members: " + memList);
+						abr.show();
+					}
+					
+				}
+			});
+
+		}
+	}
 }

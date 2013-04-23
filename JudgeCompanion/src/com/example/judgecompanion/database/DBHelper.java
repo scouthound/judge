@@ -10,6 +10,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * @author Siddharth Dahiya
@@ -40,10 +41,22 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(DBContract.Events.CREATE_TABLE_QRY);
-		db.execSQL(DBContract.Teams.CREATE_TABLE_QRY);
-		db.execSQL(DBContract.Judges.CREATE_TABLE_QRY);
-		db.execSQL(DBContract.Scores.CREATE_TABLE_QRY);
+		try {
+			Log.d("DB_EXEC", DBContract.Events.CREATE_TABLE_QRY);
+			db.execSQL(DBContract.Events.CREATE_TABLE_QRY);
+
+			Log.d("DB_EXEC", DBContract.Teams.CREATE_TABLE_QRY);
+			db.execSQL(DBContract.Teams.CREATE_TABLE_QRY);
+
+			Log.d("DB_EXEC", DBContract.Judges.CREATE_TABLE_QRY);
+			db.execSQL(DBContract.Judges.CREATE_TABLE_QRY);
+
+			Log.d("DB_EXEC", DBContract.Scores.CREATE_TABLE_QRY);
+			db.execSQL(DBContract.Scores.CREATE_TABLE_QRY);
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+			Log.e("DB-ERROR", ex.getMessage());
+		}
 	}
 
 	@Override
@@ -68,8 +81,9 @@ public class DBHelper extends SQLiteOpenHelper {
 	 * @param time
 	 *            - Is time-keeping enabled for the event.
 	 */
-	public void addEvent(String name, String description, boolean score,
-			boolean time) {
+	public void addEvent(String name, String description, boolean score, boolean time) {
+		if (name.isEmpty() || description.isEmpty())
+			return;
 		ContentValues values = new ContentValues();
 		values.put(DBContract.Events.COLUMN_NAME_NAME, name);
 		values.put(DBContract.Events.COLUMN_NAME_DESCRIPTION, description);
@@ -91,12 +105,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
 		SQLiteDatabase dbs = mInstance.getReadableDatabase();
 
-		Cursor mCursor = dbs.query(DBContract.Events.TABLE_NAME, new String[] {
-				DBContract.Events._ID, DBContract.Events.COLUMN_NAME_NAME,
-				DBContract.Events.COLUMN_NAME_DESCRIPTION,
-				DBContract.Events.COLUMN_NAME_TIME,
-				DBContract.Events.COLUMN_NAME_SCORE }, null, null, null, null,
-				null);
+		Cursor mCursor = dbs.query(DBContract.Events.TABLE_NAME, new String[] { DBContract.Events._ID, DBContract.Events.COLUMN_NAME_NAME,
+				DBContract.Events.COLUMN_NAME_DESCRIPTION, DBContract.Events.COLUMN_NAME_TIME, DBContract.Events.COLUMN_NAME_SCORE }, null, null,
+				null, null, null);
 
 		if (mCursor.moveToFirst()) {
 			do {
@@ -112,6 +123,39 @@ public class DBHelper extends SQLiteOpenHelper {
 
 		return eventList;
 	}
+	
+	/**
+	 * Get the number of Events
+	 * @return
+	 */
+	public int getEventCount()
+	{
+		SQLiteDatabase dbs = mInstance.getReadableDatabase();
+
+		Cursor mCursor = dbs.query(DBContract.Events.TABLE_NAME, new String[] { DBContract.Events._ID, DBContract.Events.COLUMN_NAME_NAME,
+				DBContract.Events.COLUMN_NAME_DESCRIPTION, DBContract.Events.COLUMN_NAME_TIME, DBContract.Events.COLUMN_NAME_SCORE }, null, null,
+				null, null, null);
+		
+		return mCursor.getCount();
+	}
+
+	/**
+	 * Get a all the events in the database.
+	 * 
+	 * @return a {@link Cursor} for all the events in the database.
+	 */
+	public Cursor getAllEventsCursor() {
+		SQLiteDatabase dbs = mInstance.getReadableDatabase();
+
+		Cursor mCursor = dbs.query(DBContract.Events.TABLE_NAME, new String[] { DBContract.Events._ID, DBContract.Events.COLUMN_NAME_NAME,
+				DBContract.Events.COLUMN_NAME_DESCRIPTION, DBContract.Events.COLUMN_NAME_TIME, DBContract.Events.COLUMN_NAME_SCORE }, null, null,
+				null, null, null);
+
+		if (mCursor.moveToFirst()) {
+			return mCursor;
+		} else
+			return null;
+	}
 
 	/**
 	 * Delete the event from the database
@@ -121,8 +165,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	 */
 	public void deleteEvent(int eventID) {
 		SQLiteDatabase dbs = mInstance.getWritableDatabase();
-		dbs.delete(DBContract.Events.TABLE_NAME, DBContract.Events._ID
-				+ " = ? ", new String[] { String.valueOf(eventID) });
+		dbs.delete(DBContract.Events.TABLE_NAME, DBContract.Events._ID + " = ? ", new String[] { String.valueOf(eventID) });
 		dbs.close();
 	}
 
@@ -137,6 +180,9 @@ public class DBHelper extends SQLiteOpenHelper {
 	 *            - Name of the Institution
 	 */
 	public void addTeam(String name, String members, String inst) {
+		if (name.isEmpty() || members.isEmpty() || inst.isEmpty())
+			return;
+
 		ContentValues values = new ContentValues();
 		values.put(DBContract.Teams.COLUMN_NAME_NAME, name);
 		values.put(DBContract.Teams.COLUMN_NAME_MEMBERS, members);
@@ -157,11 +203,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
 		SQLiteDatabase dbs = mInstance.getReadableDatabase();
 
-		Cursor mCursor = dbs.query(DBContract.Teams.TABLE_NAME, new String[] {
-				DBContract.Teams._ID, DBContract.Teams.COLUMN_NAME_NAME,
-				DBContract.Teams.COLUMN_NAME_MEMBERS,
-				DBContract.Teams.COLUMN_NAME_INSTITUTION }, null, null, null,
-				null, null);
+		Cursor mCursor = dbs.query(DBContract.Teams.TABLE_NAME, new String[] { DBContract.Teams._ID, DBContract.Teams.COLUMN_NAME_NAME,
+				DBContract.Teams.COLUMN_NAME_MEMBERS, DBContract.Teams.COLUMN_NAME_INSTITUTION }, null, null, null, null, null);
 
 		if (mCursor.moveToFirst()) {
 			do {
@@ -176,6 +219,38 @@ public class DBHelper extends SQLiteOpenHelper {
 
 		return teamsList;
 	}
+	
+	/**
+	 * Get number of teams
+	 * @return
+	 */
+	public int getTeamCount()
+	{
+		SQLiteDatabase dbs = mInstance.getReadableDatabase();
+
+		Cursor mCursor = dbs.query(DBContract.Teams.TABLE_NAME, new String[] { DBContract.Teams._ID, DBContract.Teams.COLUMN_NAME_NAME,
+				DBContract.Teams.COLUMN_NAME_MEMBERS, DBContract.Teams.COLUMN_NAME_INSTITUTION }, null, null, null, null, null);
+
+		return mCursor.getCount();
+	}
+
+	/**
+	 * Get all teams
+	 * 
+	 * @return {@link Cursor} of all teams.
+	 */
+	public Cursor getAllTeamsCursor() {
+		SQLiteDatabase dbs = mInstance.getReadableDatabase();
+
+		Cursor mCursor = dbs.query(DBContract.Teams.TABLE_NAME, new String[] { DBContract.Teams._ID, DBContract.Teams.COLUMN_NAME_NAME,
+				DBContract.Teams.COLUMN_NAME_MEMBERS, DBContract.Teams.COLUMN_NAME_INSTITUTION }, null, null, null, null, null);
+
+		if (mCursor.moveToFirst()) {
+			return mCursor;
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * Delete the team from the list.
@@ -184,8 +259,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	 */
 	public void deleteTeam(int teamID) {
 		SQLiteDatabase dbs = mInstance.getWritableDatabase();
-		dbs.delete(DBContract.Teams.TABLE_NAME, DBContract.Teams._ID + " = ? ",
-				new String[] { String.valueOf(teamID) });
+		dbs.delete(DBContract.Teams.TABLE_NAME, DBContract.Teams._ID + " = ? ", new String[] { String.valueOf(teamID) });
 		dbs.close();
 	}
 
@@ -197,8 +271,10 @@ public class DBHelper extends SQLiteOpenHelper {
 	 * @param email
 	 * @param password
 	 */
-	public void addJudge(String name, String institution, String email,
-			String password) {
+	public void addJudge(String name, String institution, String email, String password) {
+		if (name.isEmpty() || institution.isEmpty() || email.isEmpty() || password.isEmpty())
+			return;
+
 		ContentValues values = new ContentValues();
 		values.put(DBContract.Judges.COLUMN_NAME_NAME, name);
 		values.put(DBContract.Judges.COLUMN_NAME_EMAIL, email);
@@ -220,12 +296,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
 		SQLiteDatabase dbs = mInstance.getReadableDatabase();
 
-		Cursor mCursor = dbs.query(DBContract.Judges.TABLE_NAME, new String[] {
-				DBContract.Judges._ID, DBContract.Judges.COLUMN_NAME_NAME,
-				DBContract.Judges.COLUMN_NAME_INSTITUTION,
-				DBContract.Judges.COLUMN_NAME_EMAIL,
-				DBContract.Judges.COLUMN_NAME_PASSWORD }, null, null, null,
-				null, null);
+		Cursor mCursor = dbs.query(DBContract.Judges.TABLE_NAME, new String[] { DBContract.Judges._ID, DBContract.Judges.COLUMN_NAME_NAME,
+				DBContract.Judges.COLUMN_NAME_INSTITUTION, DBContract.Judges.COLUMN_NAME_EMAIL, DBContract.Judges.COLUMN_NAME_PASSWORD }, null, null,
+				null, null, null);
 
 		if (mCursor.moveToFirst()) {
 			do {
@@ -241,6 +314,39 @@ public class DBHelper extends SQLiteOpenHelper {
 
 		return judgeList;
 	}
+	
+	/**
+	 * Get number of judges.
+	 * @return
+	 */
+	public int getJudgeCount()
+	{
+		SQLiteDatabase dbs = mInstance.getReadableDatabase();
+
+		Cursor mCursor = dbs.query(DBContract.Judges.TABLE_NAME, new String[] { DBContract.Judges._ID, DBContract.Judges.COLUMN_NAME_NAME,
+				DBContract.Judges.COLUMN_NAME_INSTITUTION, DBContract.Judges.COLUMN_NAME_EMAIL, DBContract.Judges.COLUMN_NAME_PASSWORD }, null, null,
+				null, null, null);
+		
+		return mCursor.getCount();
+	}
+
+	/**
+	 * Get all judges
+	 * @return - {@link Cursor} of all judges in the DB.
+	 */
+	public Cursor getAllJudgesCursor() {
+		SQLiteDatabase dbs = mInstance.getReadableDatabase();
+
+		Cursor mCursor = dbs.query(DBContract.Judges.TABLE_NAME, new String[] { DBContract.Judges._ID, DBContract.Judges.COLUMN_NAME_NAME,
+				DBContract.Judges.COLUMN_NAME_INSTITUTION, DBContract.Judges.COLUMN_NAME_EMAIL, DBContract.Judges.COLUMN_NAME_PASSWORD }, null, null,
+				null, null, null);
+
+		if (mCursor.moveToFirst()) {
+			return mCursor;
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * Delete a judge from the list.
@@ -249,8 +355,7 @@ public class DBHelper extends SQLiteOpenHelper {
 	 */
 	public void deleteJudge(int JudgeID) {
 		SQLiteDatabase dbs = mInstance.getWritableDatabase();
-		dbs.delete(DBContract.Judges.TABLE_NAME, DBContract.Judges._ID
-				+ " = ? ", new String[] { String.valueOf(JudgeID) });
+		dbs.delete(DBContract.Judges.TABLE_NAME, DBContract.Judges._ID + " = ? ", new String[] { String.valueOf(JudgeID) });
 		dbs.close();
 	}
 
@@ -285,16 +390,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
 		SQLiteDatabase dbs = mInstance.getReadableDatabase();
 
-		String[] columns = { DBContract.Scores.COLUMN_NAME_EVENT_ID,
-				DBContract.Scores.COLUMN_NAME_TEAM_ID,
-				DBContract.Scores.COLUMN_NAME_JUDGE_ID,
-				DBContract.Scores.COLUMN_NAME_TIME,
-				DBContract.Scores.COLUMN_NAME_SCORE };
-		
-		Cursor mCursor = dbs.query(DBContract.Scores.TABLE_NAME, columns,
-				DBContract.Scores.COLUMN_NAME_EVENT_ID + " = ? ",
-				new String[] { String.valueOf(eventID) },
-				DBContract.Scores.COLUMN_NAME_TEAM_ID, null, null);
+		String[] columns = { DBContract.Scores.COLUMN_NAME_EVENT_ID, DBContract.Scores.COLUMN_NAME_TEAM_ID, DBContract.Scores.COLUMN_NAME_JUDGE_ID,
+				DBContract.Scores.COLUMN_NAME_TIME, DBContract.Scores.COLUMN_NAME_SCORE };
+
+		Cursor mCursor = dbs.query(DBContract.Scores.TABLE_NAME, columns, DBContract.Scores.COLUMN_NAME_EVENT_ID + " = ? ",
+				new String[] { String.valueOf(eventID) }, DBContract.Scores.COLUMN_NAME_TEAM_ID, null, null);
 
 		if (mCursor.moveToFirst()) {
 			do {
@@ -314,7 +414,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	/**
 	 * Get Scores by team
-	 * @param teamID - Team for which scores need to be looked up
+	 * 
+	 * @param teamID
+	 *            - Team for which scores need to be looked up
 	 * @return {@link ArrayList} of {@link Score}s.
 	 */
 	public ArrayList<Score> getScoreByTeam(int teamID) {
@@ -322,16 +424,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
 		SQLiteDatabase dbs = mInstance.getReadableDatabase();
 
-		String[] columns = { DBContract.Scores.COLUMN_NAME_EVENT_ID,
-				DBContract.Scores.COLUMN_NAME_TEAM_ID,
-				DBContract.Scores.COLUMN_NAME_JUDGE_ID,
-				DBContract.Scores.COLUMN_NAME_TIME,
-				DBContract.Scores.COLUMN_NAME_SCORE };
-		
-		Cursor mCursor = dbs.query(DBContract.Scores.TABLE_NAME, columns,
-				DBContract.Scores.COLUMN_NAME_TEAM_ID + " = ? ",
-				new String[] { String.valueOf(teamID) },
-				DBContract.Scores.COLUMN_NAME_TEAM_ID, null, null);
+		String[] columns = { DBContract.Scores.COLUMN_NAME_EVENT_ID, DBContract.Scores.COLUMN_NAME_TEAM_ID, DBContract.Scores.COLUMN_NAME_JUDGE_ID,
+				DBContract.Scores.COLUMN_NAME_TIME, DBContract.Scores.COLUMN_NAME_SCORE };
+
+		Cursor mCursor = dbs.query(DBContract.Scores.TABLE_NAME, columns, DBContract.Scores.COLUMN_NAME_TEAM_ID + " = ? ",
+				new String[] { String.valueOf(teamID) }, DBContract.Scores.COLUMN_NAME_TEAM_ID, null, null);
 
 		if (mCursor.moveToFirst()) {
 			do {
