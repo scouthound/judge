@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.judgecompanion.client.ClientActivity;
@@ -79,10 +80,11 @@ public class MainActivity extends Activity {
 
 	public void joinEvent(View theView) {
 		
-		
+		final EditText et = new EditText(this);
 		AlertDialog.Builder abr = new AlertDialog.Builder(this);
 		abr.setTitle("Event Information");
 		abr.setMessage("Enter Password");
+		abr.setView(et);
 		AlertDialog ad = abr.create();
 		CharSequence c = new String();
 		c = "OK";
