@@ -13,6 +13,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.DialogFragment;
@@ -130,7 +131,9 @@ public class ServerSetupActivity extends FragmentActivity implements AddJudgeDia
 			i.putExtra(Intent.EXTRA_EMAIL, new String[] { judges.get(it).getEmail() });
 			i.putExtra(Intent.EXTRA_SUBJECT, "Password for the Competition");
 			i.putExtra(Intent.EXTRA_TEXT, "Your password for the event is: " + judges.get(it).getPassword());
-
+			Uri uri = Uri.parse("android.resource://deepak.android.samples/raw/android");
+			i.putExtra(Intent.EXTRA_STREAM,uri);
+			
 			try {
 				startActivity(Intent.createChooser(i, "Sending  Email..."));
 			} catch (android.content.ActivityNotFoundException ex) {

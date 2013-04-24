@@ -1,8 +1,11 @@
 package com.example.judgecompanion;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
@@ -24,6 +27,7 @@ public class MainActivity extends Activity {
 	Channel mChannel; // Wifi Channel
 	BroadcastReceiver mReceiver; // Broadcast Receiver.
 	IntentFilter mIntentFilter;
+	static int compId = -1;
 
 	// END-WIFI-DIRECT
 
@@ -74,24 +78,37 @@ public class MainActivity extends Activity {
 	}
 
 	public void joinEvent(View theView) {
-		Intent intent;
-		int compId = authenticateUser("userID");
-
-		if (compId != -1) // If all of the tables can be built, go to server
-							// activity
-		{
-			Toast.makeText(this.getApplicationContext(),
-					"Joining Competition " + compId, Toast.LENGTH_SHORT).show();
-			intent = new Intent(this, ClientActivity.class);
-			startActivity(intent);
-		} else
-			Toast.makeText(this.getApplicationContext(),
-					"Cannot join competition", Toast.LENGTH_SHORT).show();
+		
+		
+		AlertDialog.Builder abr = new AlertDialog.Builder(this);
+		abr.setTitle("Event Information");
+		abr.setMessage("Enter Password");
+		AlertDialog ad = abr.create();
+		CharSequence c = new String();
+		c = "OK";
+		ad.setButton(AlertDialog.BUTTON_NEUTRAL, c, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				authenticateUser("userID");
+			}
+		});
+		ad.show();
 	}
 
 	// Dummy method: returns competition id
-	private int authenticateUser(String userId) {
-		return 1234;
+	private void authenticateUser(String userId) {
+		Intent intent;
+		compId = 1234;
+		if (compId != -1) // If all of the tables can be built, go to server
+			// activity
+	{
+	Toast.makeText(this.getApplicationContext(),
+		"Joining Competition " + compId, Toast.LENGTH_SHORT).show();
+	intent = new Intent(this, ClientActivity.class);
+	startActivity(intent);
+	} else
+	Toast.makeText(this.getApplicationContext(),
+		"Cannot join competition", Toast.LENGTH_SHORT).show();
 	}
 
 	// Sets up the tables to be used for the competition; Currently dummied.
