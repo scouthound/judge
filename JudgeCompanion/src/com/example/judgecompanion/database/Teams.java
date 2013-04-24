@@ -41,7 +41,8 @@ public class Teams {
 	 * @param members
 	 */
 	private void updateMembers(String members) {
-		String [] mems = members.split(";");
+		_members = new ArrayList<String>();
+		String [] mems = members.split(",");
 		for (String memName : mems) {
 			_members.add(memName);
 		}

@@ -189,7 +189,7 @@ public class DBHelper extends SQLiteOpenHelper {
 		values.put(DBContract.Teams.COLUMN_NAME_INSTITUTION, inst);
 
 		SQLiteDatabase dbs = mInstance.getWritableDatabase();
-		dbs.insert(DBContract.Teams.TABLE_NAME, null, values);
+		Log.d("DB-INSERT", String.valueOf(dbs.insert(DBContract.Teams.TABLE_NAME, null, values)) + " Rows affected");
 		dbs.close();
 	}
 

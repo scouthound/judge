@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -38,9 +39,7 @@ public class ServerSetupPageFragment extends Fragment {
 	private DBHelper dbs;
 	public static final String ARG_PAGE = "page";
 	private int mPageNumber;
-
-	// private String entryValue = "";
-	// private List<SetupEntry> values = new ArrayList<SetupEntry>();
+	private ViewGroup rootView;
 
 	public static ServerSetupPageFragment create(int pageNumber) {
 		ServerSetupPageFragment fragment = new ServerSetupPageFragment();
@@ -71,7 +70,7 @@ public class ServerSetupPageFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		ViewGroup rootView;
+//		ViewGroup rootView;
 		switch (mPageNumber) {
 		case 1:
 			rootView = (ViewGroup) inflater.inflate(R.layout.fragment_server_teams, container, false);
@@ -109,20 +108,18 @@ public class ServerSetupPageFragment extends Fragment {
 
 			switch (mPageNumber) {
 			case 1:
-				// getView().findViewById(R.id.txt_empty_teams).setVisibility(View.GONE);
 				dataToAdd = "Teams";
 				break;
 			case 2:
-				// getView().findViewById(R.id.txt_empty_events).setVisibility(View.GONE);
 				dataToAdd = "Events";
 				break;
 			default:
-				// getView().findViewById(R.id.txt_empty_judges).setVisibility(View.GONE);
 				dataToAdd = "Judges";
 				break;
 			}
 
 			callNewRowDialog(dataToAdd);
+			addExistingValues(rootView);
 		}
 
 		return super.onOptionsItemSelected(item);
@@ -200,7 +197,16 @@ public class ServerSetupPageFragment extends Fragment {
 						AlertDialog.Builder abr = new AlertDialog.Builder(getActivity());
 						abr.setTitle("Judge Information");
 						abr.setMessage("Name: " + j.getName() + "\nInstitution: " + j.getInstitution() + "\nEmail: " + j.getEmail());
-						abr.show();
+						AlertDialog ad = abr.create();
+						CharSequence c = new String();
+						c = "OK";
+						ad.setButton(AlertDialog.BUTTON_NEUTRAL, c, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+							}
+						});
+						ad.show();
 					}
 				}
 			});
@@ -240,7 +246,16 @@ public class ServerSetupPageFragment extends Fragment {
 						abr.setTitle("Event Information");
 						abr.setMessage("Name: " + et.getName() + "\nDescription: " + et.getDescription() + "\n Timed: "
 								+ (et.isTimed() ? "Yes" : "No") + "\n Scored:" + (et.isScored() ? "Yes" : "No"));
-						abr.show();
+						AlertDialog ad = abr.create();
+						CharSequence c = new String();
+						c = "OK";
+						ad.setButton(AlertDialog.BUTTON_NEUTRAL, c, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+							}
+						});
+						ad.show();
 					}
 				}
 			});
@@ -255,7 +270,16 @@ public class ServerSetupPageFragment extends Fragment {
 						abr.setTitle("Event Information");
 						abr.setMessage("Name: " + et.getName() + "\nDescription: " + et.getDescription() + "\n Timed: "
 								+ (et.isTimed() ? "Yes" : "No") + "\n Scored:" + (et.isScored() ? "Yes" : "No"));
-						abr.show();
+						AlertDialog ad = abr.create();
+						CharSequence c = new String();
+						c = "OK";
+						ad.setButton(AlertDialog.BUTTON_NEUTRAL, c, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+							}
+						});
+						ad.show();
 					}
 					return false;
 				}
@@ -270,27 +294,34 @@ public class ServerSetupPageFragment extends Fragment {
 			final ArrayAdapter<Teams> teamsAdapter = new ArrayAdapter<Teams>(view.getContext(), android.R.layout.simple_list_item_1, tms);
 			mContainerView.setAdapter(teamsAdapter);
 			mContainerView.setTextFilterEnabled(true);
-			
+
 			mContainerView.setOnItemClickListener(new OnItemClickListener() {
 
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-					if(arg2 >= 0)
-					{
+					if (arg2 >= 0) {
 						Teams t = teamsAdapter.getItem(arg2);
 						AlertDialog.Builder abr = new AlertDialog.Builder(getActivity());
 						abr.setTitle("Team Details");
 						ArrayList<String> mList = t.getMemberList();
 						String memList = "";
-						for(int i = 0; i <= mList.size(); i++)
-						{
-							memList += "\n" + (i+1) + ". " + mList.get(i);
+						for (int i = 0; i <= mList.size(); i++) {
+							memList += "\n" + (i + 1) + ". " + mList.get(i);
 						}
-						
+
 						abr.setMessage("Team Name: " + t.getTeamName() + "\nInstitution: " + t.getInstitution() + "\nTeam Members: " + memList);
-						abr.show();
+						AlertDialog ad = abr.create();
+						CharSequence c = new String();
+						c = "OK";
+						ad.setButton(AlertDialog.BUTTON_NEUTRAL, c, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+							}
+						});
+						ad.show();
 					}
-					
+
 				}
 			});
 
