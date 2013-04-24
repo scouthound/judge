@@ -1,6 +1,11 @@
 package com.example.judgecompanion.server;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -14,6 +19,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,16 +27,18 @@ import android.widget.Toast;
 
 import com.example.judgecompanion.R;
 import com.example.judgecompanion.database.DBHelper;
+import com.example.judgecompanion.database.Events;
 import com.example.judgecompanion.database.Judges;
+import com.example.judgecompanion.database.SetupObject;
+import com.example.judgecompanion.database.Teams;
 import com.example.judgecompanion.dialogs.AddJudgeDialogFragment;
 import com.example.judgecompanion.server.fragments.ServerSetupPageFragment;
 
-public class ServerSetupActivity extends FragmentActivity implements AddJudgeDialogFragment.DialogTemplateListener{
+public class ServerSetupActivity extends FragmentActivity implements AddJudgeDialogFragment.DialogTemplateListener {
 	private static int NUM_PAGES = 4;
+	private static String FILENAME = "setupfile" + DateFormat.getDateInstance().format(new Date()) + ".jc";
 	private ViewPager mPager;
 	private PagerAdapter mPagerAdapter;
-	
-	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,27 +118,39 @@ public class ServerSetupActivity extends FragmentActivity implements AddJudgeDia
 	}
 
 	public void createCompetition(View theView) {
+		prepareOutFile();
 		// Send an email to all judges
 		DBHelper dbs = DBHelper.getInstance(this);
 		ArrayList<Judges> judges = dbs.getAllJudges();
 		String[] emailList = new String[judges.size()];
 
-		for(int it = 0; it < emailList.length; it++)
-		{
-			Intent i = new Intent(Intent.ACTION_SEND); 
-			i.setType("text/plain"); 
-			i.putExtra(Intent.EXTRA_EMAIL  , new String[]{judges.get(it).getEmail()});
-			i.putExtra(Intent.EXTRA_SUBJECT, "Password for the Competition"); 
-			i.putExtra(Intent.EXTRA_TEXT   , "Your password for the event is: " + judges.get(it).getPassword()); 
+		for (int it = 0; it < emailList.length; it++) {
+			Intent i = new Intent(Intent.ACTION_SEND);
+			i.setType("text/plain");
+			i.putExtra(Intent.EXTRA_EMAIL, new String[] { judges.get(it).getEmail() });
+			i.putExtra(Intent.EXTRA_SUBJECT, "Password for the Competition");
+			i.putExtra(Intent.EXTRA_TEXT, "Your password for the event is: " + judges.get(it).getPassword());
 
-			try 
-			{     
-			   startActivity(Intent.createChooser(i, "Sending  Email...")); 
-			} 
-			catch (android.content.ActivityNotFoundException ex) 
-			{     
-			   Toast.makeText(ServerSetupActivity.this, "No Email clients",Toast.LENGTH_SHORT ).show(); 
-			} 
+			try {
+				startActivity(Intent.createChooser(i, "Sending  Email..."));
+			} catch (android.content.ActivityNotFoundException ex) {
+				Toast.makeText(ServerSetupActivity.this, "No Email clients", Toast.LENGTH_SHORT).show();
+			}
+		}
+	}
+
+	private void prepareOutFile() {
+		ArrayList<Teams> tms = DBHelper.getInstance(this).getAllTeams();
+		ArrayList<Events> evnts = DBHelper.getInstance(this).getAllEvents();
+
+		SetupObject so = new SetupObject(evnts, tms);
+		try {
+			FileOutputStream fos = new FileOutputStream(FILENAME);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(so);
+			oos.close();
+		} catch (IOException iex) {
+			Log.e("IOException", iex.getMessage());
 		}
 	}
 
@@ -157,15 +177,14 @@ public class ServerSetupActivity extends FragmentActivity implements AddJudgeDia
 	public boolean onOptionsItemSelected(MenuItem item) {
 		return super.onOptionsItemSelected(item);
 	}
-	
-	public void onSavedInstanceState(Bundle outState)
-	{
+
+	public void onSavedInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 	}
 
 	@Override
 	public void onDialogPositiveClick(DialogFragment dialog, String result) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
