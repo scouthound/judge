@@ -9,6 +9,7 @@ import com.example.judgecompanion.R.id;
 import com.example.judgecompanion.database.DBHelper;
 import com.example.judgecompanion.database.Teams;
 import com.example.judgecompanion.dialogs.abstracts.DialogTemplateFragment;
+import com.example.judgecompanion.server.fragments.ServerSetupPageFragment;
 
 @SuppressLint("ValidFragment")
 public class AddTeamDialogFragment extends DialogTemplateFragment {
@@ -31,7 +32,7 @@ public class AddTeamDialogFragment extends DialogTemplateFragment {
 			error = true;
 			((EditText) this.theView.findViewById(id.add_team_name_edit)).requestFocus();
 		}
-		if (members.isEmpty()) {
+		if (members.isEmpty() || !members.contains(",")) {
 			error = true;
 			((EditText) this.theView.findViewById(id.add_team_member_edit)).requestFocus();
 		}
@@ -56,6 +57,8 @@ public class AddTeamDialogFragment extends DialogTemplateFragment {
 			});
 			abr.show();
 		}
+		
+		ServerSetupPageFragment.create(1);
 	}
 
 	@Override

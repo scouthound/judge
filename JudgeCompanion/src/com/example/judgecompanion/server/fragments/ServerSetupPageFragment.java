@@ -51,7 +51,14 @@ public class ServerSetupPageFragment extends Fragment {
 
 	public ServerSetupPageFragment() {
 	}
-
+	
+	public void refresh()
+	{
+		if(rootView != null)
+		{
+			addExistingValues(rootView);
+		}
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -288,9 +295,9 @@ public class ServerSetupPageFragment extends Fragment {
 	}
 
 	private void addTeams(ArrayList<Teams> tms, ViewGroup view) {
-		if (view != null && view.findViewById(R.id.txt_empty_events) != null) {
-			view.findViewById(R.id.txt_empty_events).setVisibility(View.GONE);
-			final ListView mContainerView = (ListView) view.findViewById(R.id.container_events);
+		if (view != null && view.findViewById(R.id.txt_empty_teams) != null) {
+			view.findViewById(R.id.txt_empty_teams).setVisibility(View.GONE);
+			final ListView mContainerView = (ListView) view.findViewById(R.id.container_teams);
 			final ArrayAdapter<Teams> teamsAdapter = new ArrayAdapter<Teams>(view.getContext(), android.R.layout.simple_list_item_1, tms);
 			mContainerView.setAdapter(teamsAdapter);
 			mContainerView.setTextFilterEnabled(true);
@@ -305,7 +312,7 @@ public class ServerSetupPageFragment extends Fragment {
 						abr.setTitle("Team Details");
 						ArrayList<String> mList = t.getMemberList();
 						String memList = "";
-						for (int i = 0; i <= mList.size(); i++) {
+						for (int i = 0; i < mList.size(); i++) {
 							memList += "\n" + (i + 1) + ". " + mList.get(i);
 						}
 

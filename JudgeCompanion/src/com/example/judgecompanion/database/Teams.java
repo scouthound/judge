@@ -46,6 +46,7 @@ public class Teams {
 		for (String memName : mems) {
 			_members.add(memName);
 		}
+		_members.trimToSize();
 	}
 	
 	/**
@@ -98,6 +99,7 @@ public class Teams {
 		StringBuilder sb = new StringBuilder();
 		for (String t : _members) {
 			sb.append(t);
+			sb.append(",");
 		}
 		
 		return sb.toString();
