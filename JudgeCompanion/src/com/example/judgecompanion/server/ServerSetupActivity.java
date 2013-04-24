@@ -1,10 +1,13 @@
 package com.example.judgecompanion.server;
 
+import java.util.ArrayList;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.app.DialogFragment;
@@ -14,8 +17,11 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.judgecompanion.R;
+import com.example.judgecompanion.database.DBHelper;
+import com.example.judgecompanion.database.Judges;
 import com.example.judgecompanion.dialogs.AddJudgeDialogFragment;
 import com.example.judgecompanion.server.fragments.ServerSetupPageFragment;
 
@@ -104,8 +110,31 @@ public class ServerSetupActivity extends FragmentActivity implements AddJudgeDia
 	}
 
 	public void createCompetition(View theView) {
-		// Do what you need to do then kick back to main to go to edit pages
-		this.finish();
+		// Send an email to all judges
+		DBHelper dbs = DBHelper.getInstance(this);
+		ArrayList<Judges> judges = dbs.getAllJudges();
+		String[] emailList = new String[judges.size()];
+		
+		for(int i = 0; i < emailList.length; i++)
+		{
+			emailList[i] = judges.get(i).getEmail();
+		}
+		
+		
+		Intent i = new Intent(Intent.ACTION_SEND); 
+		i.setType("text/plain"); 
+		i.putExtra(Intent.EXTRA_EMAIL  , emailList); 
+		i.putExtra(Intent.EXTRA_SUBJECT, "Password for the Competition"); 
+		i.putExtra(Intent.EXTRA_TEXT   , "body part"); 
+
+		try 
+		{     
+		   startActivity(Intent.createChooser(i, "Sending  Email...")); 
+		} 
+		catch (android.content.ActivityNotFoundException ex) 
+		{     
+		   Toast.makeText(ServerSetupActivity.this, "No Email clients",Toast.LENGTH_SHORT ).show(); 
+		} 
 	}
 
 	/**
