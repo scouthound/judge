@@ -114,27 +114,24 @@ public class ServerSetupActivity extends FragmentActivity implements AddJudgeDia
 		DBHelper dbs = DBHelper.getInstance(this);
 		ArrayList<Judges> judges = dbs.getAllJudges();
 		String[] emailList = new String[judges.size()];
-		
-		for(int i = 0; i < emailList.length; i++)
-		{
-			emailList[i] = judges.get(i).getEmail();
-		}
-		
-		
-		Intent i = new Intent(Intent.ACTION_SEND); 
-		i.setType("text/plain"); 
-		i.putExtra(Intent.EXTRA_EMAIL  , emailList); 
-		i.putExtra(Intent.EXTRA_SUBJECT, "Password for the Competition"); 
-		i.putExtra(Intent.EXTRA_TEXT   , "body part"); 
 
-		try 
-		{     
-		   startActivity(Intent.createChooser(i, "Sending  Email...")); 
-		} 
-		catch (android.content.ActivityNotFoundException ex) 
-		{     
-		   Toast.makeText(ServerSetupActivity.this, "No Email clients",Toast.LENGTH_SHORT ).show(); 
-		} 
+		for(int it = 0; it < emailList.length; it++)
+		{
+			Intent i = new Intent(Intent.ACTION_SEND); 
+			i.setType("text/plain"); 
+			i.putExtra(Intent.EXTRA_EMAIL  , new String[]{judges.get(it).getEmail()});
+			i.putExtra(Intent.EXTRA_SUBJECT, "Password for the Competition"); 
+			i.putExtra(Intent.EXTRA_TEXT   , "Your password for the event is: " + judges.get(it).getPassword()); 
+
+			try 
+			{     
+			   startActivity(Intent.createChooser(i, "Sending  Email...")); 
+			} 
+			catch (android.content.ActivityNotFoundException ex) 
+			{     
+			   Toast.makeText(ServerSetupActivity.this, "No Email clients",Toast.LENGTH_SHORT ).show(); 
+			} 
+		}
 	}
 
 	/**
